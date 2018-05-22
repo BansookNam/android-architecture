@@ -16,10 +16,11 @@ ext {
     rulesVersion = '1.0.1'
     espressoVersion = '3.0.1'
     roomVersion = "1.0.0"
+    svcVersion = "0.0.1-alpha4"
 }
 
 buildscript {
-    ext.kotlinVersion = '1.1.51'
+    ext.kotlinVersion = '1.2.41'
     ext.gradlePluginVersion = '3.0.0'
     repositories {
         jcenter()

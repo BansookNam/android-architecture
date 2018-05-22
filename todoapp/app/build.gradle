@@ -67,6 +67,9 @@ android {
  all versions in a single place. This improves readability and helps managing project complexity.
  */
 dependencies {
+    // Dependency for SVC
+    implementation "com.naver.android.svc:svc:$rootProject.svcVersion"
+
     // App's dependencies, including test
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
