@@ -1,34 +1,49 @@
-# todo-mvp-kotlin
+# todo-svc-kotlin
 
-This version of the app is called todo-mvp-kotlin, and provides a foundation for other kotlin samples in this project. The sample aims to:
+This version of the app is called todo-svc-kotlin, and provides a foundation for other kotlin samples in this project. The sample aims to:
 
-* Provide a basic [Model-View-Presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) (MVP) architecture without using any architectural frameworks.
+* Provide a basic [Screen-Views-ControlTower](https://medium.com/@bansooknam/svc-the-better-pattern-against-mvp-66e6d342a23f) (SVC) with svc library dependency.
 * Act as a reference point for comparing and contrasting the other kotlin samples in this project.
-* Leverage idiomatic kotlin to improve readability and limit verbosity, as compared to the TODO-MVP java project.
+* Leverage idiomatic kotlin to improve readability and limit verbosity, as compared to the TODO-MVP kotlin project.
 
 # Dependencies
-*  Kotlin stdlib
-*  kotlin-android plugin
+* Kotlin stdlib
+
+* kotlin-android plugin
+
+* SVC library. 
+
+  ```groovy
+  implementation "com.naver.android.svc:svc:$0.0.1-alpha5"
+  ```
+
+  
 
 ## Features
 
 ### Complexity - understandability
 
-Medium: If you already understand TODO-MVP (Java), you need to [learn](http://kotlinlang.org/docs/reference/) the kotlin language.
+Medium: You need to [learn](http://kotlinlang.org/docs/reference/) the kotlin language. 
+
+And you need to read what is SVC. Read this [article](https://medium.com/@bansooknam/svc-the-better-pattern-against-mvp-66e6d342a23f)
+
+
 
 ### Testability
 
 #### Unit testing
 
-Same as TODO-MVP.
+Will be updated after finish this project
 
 #### Integration testing
 
-Same as TODO-MVP.
+Will be updated after finish this project
 
 ### Code metrics
 
-Files were converted mostly 1:1 from TODO-MVP's Java code.
+Will be updated after finish this project
+
+The below chart is from (kotlin MVP)
 
 ```
 -------------------------------------------------------------------------------
@@ -44,7 +59,7 @@ SUM:                            82           1053           1877           3919
 
 #### Ease of amending or adding a feature
 
-Same as TODO-MVP.
+Really easy.
 
 #### Learning cost
 
