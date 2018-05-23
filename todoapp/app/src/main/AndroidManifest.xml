@@ -25,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.example.android.architecture.blueprints.todoapp.tasks.TasksActivity"
+            android:name="com.example.android.architecture.blueprints.todoapp.screen.TasksActivity"
             android:theme="@style/AppTheme.OverlapSystemBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,12 +36,12 @@
         <activity android:name="com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity" />
         <activity
             android:name="com.example.android.architecture.blueprints.todoapp.statistics.StatisticsActivity"
-            android:parentActivityName=".tasks.TasksActivity"
+            android:parentActivityName="com.example.android.architecture.blueprints.todoapp.screen.TasksActivity"
             tools:ignore="UnusedAttribute">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".tasks.TasksActivity" />
+                android:value="com.example.android.architecture.blueprints.todoapp.screen.TasksActivity" />
         </activity>
     </application>
 
