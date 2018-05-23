@@ -1,23 +1,21 @@
 package com.example.android.architecture.blueprints.todoapp.screen
 
 import android.os.Bundle
-import android.support.v4.view.GravityCompat
 import android.view.MenuItem
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksFragment
 import com.example.android.architecture.blueprints.todoapp.util.replaceFragmentInActivity
-import com.example.android.architecture.blueprints.todoapp.util.setupActionBar
 import com.naver.android.svc.core.SvcBaseActivity
 
 /**
  * @author bs.nam@navercorp.com
  */
-class TasksActivity : SvcBaseActivity<TasksViews, TasksCT>() {
+class MainActivity : SvcBaseActivity<MainViews, MainCT>() {
 
     private val CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY"
 
-    override fun createControlTower() = TasksCT(this, views)
-    override fun createViews() = TasksViews(this)
+    override fun createControlTower() = MainCT(this, views)
+    override fun createViews() = MainViews(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

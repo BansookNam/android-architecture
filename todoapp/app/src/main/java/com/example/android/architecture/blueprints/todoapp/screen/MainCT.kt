@@ -6,7 +6,7 @@ import com.naver.android.svc.core.SvcBaseCT
 /**
  * @author bs.nam@navercorp.com
  */
-class TasksCT(owner: TasksActivity, views: TasksViews) : SvcBaseCT<TasksActivity, TasksViews>(owner, views), TasksUseCase {
+class MainCT(owner: MainActivity, views: MainViews) : SvcBaseCT<MainActivity, MainViews>(owner, views), MainUseCase {
 
     var currentFiltering = TasksFilterType.ALL_TASKS
 

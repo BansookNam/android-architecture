@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_tasks.*
 /**
  * @author bs.nam@navercorp.com
  */
-class TasksViews(owner: TasksActivity) : UseCaseViews<TasksActivity, TasksUseCase>(owner) {
+class MainViews(owner: MainActivity) : UseCaseViews<MainActivity, MainUseCase>(owner) {
 
     val drawerLayout by lazy { owner.drawer_layout }
 
