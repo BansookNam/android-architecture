@@ -5,6 +5,8 @@ import com.naver.android.svc.core.views.UseCase
 /**
  * @author bs.nam@navercorp.com
  */
-interface TasksUseCase : UseCase {
+interface TasksUseCase : UseCase, TasksAdapter.TaskItemListener {
+    fun onRefresh()
+    fun onClickTaskAdd()
 
 }

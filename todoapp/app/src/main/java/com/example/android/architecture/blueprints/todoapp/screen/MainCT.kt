@@ -1,6 +1,6 @@
 package com.example.android.architecture.blueprints.todoapp.screen
 
-import com.example.android.architecture.blueprints.todoapp.tasks.TasksFilterType
+import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksFragment
 import com.naver.android.svc.core.SvcBaseCT
 
 /**
@@ -8,11 +8,17 @@ import com.naver.android.svc.core.SvcBaseCT
  */
 class MainCT(owner: MainActivity, views: MainViews) : SvcBaseCT<MainActivity, MainViews>(owner, views), MainUseCase {
 
-    var currentFiltering = TasksFilterType.ALL_TASKS
-
     override fun onCreated() {
     }
 
     override fun onClickStatisticMenu() {
+        owner.showStatisticFragment()
+    }
+
+    override fun onClickFabTaskAdd() {
+        val fragment = owner.contentFragment
+        if (fragment is TasksFragment) {
+            fragment.startEditTaskActivity()
+        }
     }
 }

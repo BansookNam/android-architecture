@@ -1,9 +1,11 @@
 package com.example.android.architecture.blueprints.todoapp.screen
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.view.MenuItem
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksFragment
+import com.example.android.architecture.blueprints.todoapp.statistics.StatisticsFragment
 import com.example.android.architecture.blueprints.todoapp.util.replaceFragmentInActivity
 import com.naver.android.svc.core.SvcBaseActivity
 
@@ -11,25 +13,19 @@ import com.naver.android.svc.core.SvcBaseActivity
  * @author bs.nam@navercorp.com
  */
 class MainActivity : SvcBaseActivity<MainViews, MainCT>() {
-
-    private val CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY"
+    val contentFragment: Fragment
+        get() = supportFragmentManager.findFragmentById(R.id.contentFrame)
 
     override fun createControlTower() = MainCT(this, views)
     override fun createViews() = MainViews(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         supportFragmentManager.findFragmentById(R.id.contentFrame)
                 as TasksFragment? ?: TasksFragment().also {
             replaceFragmentInActivity(it, R.id.contentFrame)
         }
-    }
-
-    public override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState.apply {
-            putSerializable(CURRENT_FILTERING_KEY, ct.currentFiltering)
-        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -39,5 +35,13 @@ class MainActivity : SvcBaseActivity<MainViews, MainCT>() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun showStatisticFragment() {
+        /*val currentFragment = contentFragment
+        if(currentFragment !is StatisticsFragment){
+            replaceFragmentInActivity(StatisticsFragment(), R.id.contentFrame)
+
+        }*/
     }
 }

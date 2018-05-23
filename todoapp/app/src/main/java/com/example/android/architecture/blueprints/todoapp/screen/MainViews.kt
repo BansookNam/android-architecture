@@ -5,7 +5,7 @@ import android.support.v4.view.GravityCompat
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.util.setupActionBar
 import com.naver.android.svc.core.views.UseCaseViews
-import kotlinx.android.synthetic.main.activity_tasks.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  * @author bs.nam@navercorp.com
@@ -15,7 +15,7 @@ class MainViews(owner: MainActivity) : UseCaseViews<MainActivity, MainUseCase>(o
     val drawerLayout by lazy { owner.drawer_layout }
 
     override val layoutResId: Int
-        get() = R.layout.activity_tasks
+        get() = R.layout.activity_main
 
     override fun onCreated() {
 
@@ -23,6 +23,12 @@ class MainViews(owner: MainActivity) : UseCaseViews<MainActivity, MainUseCase>(o
             setHomeAsUpIndicator(R.drawable.ic_menu)
             setDisplayHomeAsUpEnabled(true)
         }
+
+        owner.fab_add_task.apply {
+            setImageResource(R.drawable.ic_add)
+            setOnClickListener { usecase.onClickFabTaskAdd() }
+        }
+
 
         drawerLayout.setStatusBarBackground(R.color.colorPrimaryDark)
         setupDrawerContent(owner.nav_view)
