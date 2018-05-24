@@ -5,6 +5,7 @@ import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
 import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskActivity
+import com.example.android.architecture.blueprints.todoapp.screen.taskdetail.TaskDetailActivity
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
 import com.naver.android.svc.core.SvcBaseCT
 import java.util.*
@@ -24,10 +25,14 @@ class TasksCT(owner: TasksFragment, views: TasksViews) : SvcBaseCT<TasksFragment
 
     fun result(requestCode: Int, resultCode: Int) {
         // If a task was successfully added, show snackbar
-        if (AddEditTaskActivity.REQUEST_ADD_TASK ==
-                requestCode && Activity.RESULT_OK == resultCode) {
-            views.showSuccessfullySavedMessage()
-            loadTasks(false)
+        when (requestCode) {
+            TasksFragment.REQUEST_ADD_TASK -> {
+                if (Activity.RESULT_OK == resultCode) {
+                    views.showSuccessfullySavedMessage()
+                    loadTasks(false)
+                }
+            }
+            TasksFragment.REQUEST_TASK_DETAIL -> loadTasks(false)
         }
     }
 

@@ -14,6 +14,7 @@ class MainViews(owner: MainActivity) : UseCaseViews<MainActivity, MainUseCase>(o
 
     val drawerLayout by lazy { owner.drawer_layout }
     val toolbar by lazy { owner.toolbar }
+    val fab by lazy { owner.fab_add_task }
 
     override val layoutResId: Int
         get() = R.layout.activity_main
@@ -25,7 +26,7 @@ class MainViews(owner: MainActivity) : UseCaseViews<MainActivity, MainUseCase>(o
             setDisplayHomeAsUpEnabled(true)
         }
 
-        owner.fab_add_task.apply {
+        fab.apply {
             setImageResource(R.drawable.ic_add)
             setOnClickListener { usecase.onClickFabTaskAdd() }
         }
@@ -52,5 +53,13 @@ class MainViews(owner: MainActivity) : UseCaseViews<MainActivity, MainUseCase>(o
             drawerLayout.closeDrawers()
             true
         }
+    }
+
+    fun hideFab() {
+        fab.hide()
+    }
+
+    fun showFab() {
+        fab.show()
     }
 }

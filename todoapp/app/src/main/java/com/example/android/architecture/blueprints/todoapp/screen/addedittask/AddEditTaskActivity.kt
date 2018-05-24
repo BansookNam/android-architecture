@@ -51,7 +51,6 @@ class AddEditTaskActivity : SvcBaseActivity<AddEditTaskViews, AddEditTaskCT>() {
 
     companion object {
         const val SHOULD_LOAD_DATA_FROM_REPO_KEY = "SHOULD_LOAD_DATA_FROM_REPO_KEY"
-        const val REQUEST_ADD_TASK = 1
         const val ARGUMENT_EDIT_TASK_ID = "EDIT_TASK_ID"
     }
 

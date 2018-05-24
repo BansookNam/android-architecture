@@ -7,7 +7,7 @@ import android.view.MenuItem
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.screen.MainActivity
 import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskActivity
-import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailActivity
+import com.example.android.architecture.blueprints.todoapp.screen.taskdetail.TaskDetailActivity
 import com.naver.android.svc.core.SvcBaseFragment
 
 /**
@@ -73,12 +73,16 @@ class TasksFragment : SvcBaseFragment<TasksViews, TasksCT>() {
         val intent = Intent(context, TaskDetailActivity::class.java).apply {
             putExtra(TaskDetailActivity.EXTRA_TASK_ID, taskId)
         }
-        startActivity(intent)
+        startActivityForResult(intent, REQUEST_TASK_DETAIL)
     }
 
     fun startEditTaskActivity() {
         val intent = Intent(context, AddEditTaskActivity::class.java)
-        startActivityForResult(intent, AddEditTaskActivity.REQUEST_ADD_TASK)
+        startActivityForResult(intent, REQUEST_ADD_TASK)
     }
 
+    companion object {
+        const val REQUEST_ADD_TASK = 1
+        const val REQUEST_TASK_DETAIL = 2
+    }
 }

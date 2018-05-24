@@ -42,6 +42,7 @@ class MainActivity : SvcBaseActivity<MainViews, MainCT>() {
     fun showStatisticFragment() {
         val currentFragment = contentFragment
         if(currentFragment !is StatisticsFragment){
+            views.hideFab()
             replaceFragmentInActivity(StatisticsFragment(), R.id.contentFrame)
         }
     }
@@ -49,6 +50,7 @@ class MainActivity : SvcBaseActivity<MainViews, MainCT>() {
     fun showTaskList() {
         val currentFragment = contentFragment
         if(currentFragment !is TasksFragment){
+            views.showFab()
             replaceFragmentInActivity(TasksFragment(), R.id.contentFrame)
         }
     }
