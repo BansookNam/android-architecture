@@ -3,11 +3,13 @@ package com.example.android.architecture.blueprints.todoapp.screen
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.MenuItem
+import android.widget.TextView
 import com.example.android.architecture.blueprints.todoapp.R
+import com.example.android.architecture.blueprints.todoapp.screen.statistics.StatisticsFragment
 import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksFragment
-import com.example.android.architecture.blueprints.todoapp.statistics.StatisticsFragment
 import com.example.android.architecture.blueprints.todoapp.util.replaceFragmentInActivity
 import com.naver.android.svc.core.SvcBaseActivity
+import com.naver.android.svc.core.SvcBaseFragment
 
 /**
  * @author bs.nam@navercorp.com
@@ -38,10 +40,16 @@ class MainActivity : SvcBaseActivity<MainViews, MainCT>() {
     }
 
     fun showStatisticFragment() {
-        /*val currentFragment = contentFragment
+        val currentFragment = contentFragment
         if(currentFragment !is StatisticsFragment){
             replaceFragmentInActivity(StatisticsFragment(), R.id.contentFrame)
+        }
+    }
 
-        }*/
+    fun showTaskList() {
+        val currentFragment = contentFragment
+        if(currentFragment !is TasksFragment){
+            replaceFragmentInActivity(TasksFragment(), R.id.contentFrame)
+        }
     }
 }

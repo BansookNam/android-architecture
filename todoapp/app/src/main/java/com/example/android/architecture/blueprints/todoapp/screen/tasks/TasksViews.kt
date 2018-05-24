@@ -133,5 +133,4 @@ class TasksViews(owner: TasksFragment) : UseCaseViews<TasksFragment, TasksUseCas
         rootView?.showSnackBar(message, Snackbar.LENGTH_LONG)
     }
 
-
 }

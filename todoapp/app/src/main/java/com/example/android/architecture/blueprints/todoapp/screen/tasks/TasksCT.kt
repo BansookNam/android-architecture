@@ -2,13 +2,13 @@ package com.example.android.architecture.blueprints.todoapp.screen.tasks
 
 import android.app.Activity
 import com.example.android.architecture.blueprints.todoapp.Injection
-import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
+import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskActivity
 import com.example.android.architecture.blueprints.todoapp.tasks.TasksFilterType
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
 import com.naver.android.svc.core.SvcBaseCT
-import java.util.ArrayList
+import java.util.*
 
 /**
  * @author bs.nam@navercorp.com
@@ -17,7 +17,7 @@ class TasksCT(owner: TasksFragment, views: TasksViews) : SvcBaseCT<TasksFragment
 
     var currentFiltering: TasksFilterType = TasksFilterType.ACTIVE_TASKS
     private var firstLoad = true
-    private val tasksRepository by lazy{ Injection.provideTasksRepository(activity!!.applicationContext)}
+    private val tasksRepository by lazy { Injection.provideTasksRepository(activity!!.applicationContext) }
 
     override fun onCreated() {
         loadTasks(false)
@@ -28,6 +28,7 @@ class TasksCT(owner: TasksFragment, views: TasksViews) : SvcBaseCT<TasksFragment
         if (AddEditTaskActivity.REQUEST_ADD_TASK ==
                 requestCode && Activity.RESULT_OK == resultCode) {
             views.showSuccessfullySavedMessage()
+            loadTasks(false)
         }
     }
 

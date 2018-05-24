@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainViews(owner: MainActivity) : UseCaseViews<MainActivity, MainUseCase>(owner) {
 
     val drawerLayout by lazy { owner.drawer_layout }
+    val toolbar by lazy { owner.toolbar }
 
     override val layoutResId: Int
         get() = R.layout.activity_main
@@ -40,8 +41,11 @@ class MainViews(owner: MainActivity) : UseCaseViews<MainActivity, MainUseCase>(o
 
     private fun setupDrawerContent(navigationView: NavigationView) {
         navigationView.setNavigationItemSelectedListener { menuItem ->
-            if (menuItem.itemId == R.id.statistics_navigation_menu_item) {
-                usecase.onClickStatisticMenu()
+
+            when (menuItem.itemId) {
+                R.id.statistics_navigation_menu_item -> usecase.onClickStatisticMenu()
+                R.id.list_navigation_menu_item -> usecase.onClickTaskListMenu()
+
             }
             // Close the navigation drawer when an item is selected.
             menuItem.isChecked = true

@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.support.v7.widget.PopupMenu
 import android.view.MenuItem
 import com.example.android.architecture.blueprints.todoapp.R
-import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity
+import com.example.android.architecture.blueprints.todoapp.screen.MainActivity
+import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskActivity
 import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailActivity
 import com.example.android.architecture.blueprints.todoapp.tasks.TasksFilterType
 import com.naver.android.svc.core.SvcBaseFragment
@@ -23,6 +24,7 @@ class TasksFragment : SvcBaseFragment<TasksViews, TasksCT>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (activity as MainActivity).supportActionBar?.setTitle(R.string.list_title)
         setHasOptionsMenu(true)
         if (savedInstanceState != null) {
             ct.currentFiltering = savedInstanceState.getSerializable(CURRENT_FILTERING_KEY)

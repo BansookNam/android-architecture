@@ -8,5 +8,6 @@ import com.naver.android.svc.core.views.UseCase
 interface MainUseCase : UseCase {
     fun onClickStatisticMenu()
     fun onClickFabTaskAdd()
+    fun onClickTaskListMenu()
 
 }

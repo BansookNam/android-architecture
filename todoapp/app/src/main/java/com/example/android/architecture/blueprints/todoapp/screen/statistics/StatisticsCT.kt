@@ -1,45 +1,24 @@
-/*
- * Copyright (C) 2017 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package com.example.android.architecture.blueprints.todoapp.statistics
+package com.example.android.architecture.blueprints.todoapp.screen.statistics
 
-
+import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
-import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
+import com.naver.android.svc.core.SvcBaseCT
 
 /**
- * Listens to user actions from the UI ([StatisticsFragment]), retrieves the data and updates
- * the UI as required.
+ * @author bs.nam@navercorp.com
  */
-class StatisticsPresenter(
-        val tasksRepository: TasksRepository,
-        val statisticsView: StatisticsContract.View
-) : StatisticsContract.Presenter {
+class StatisticsCT(owner: StatisticsFragment, views: StatisticsViews) : SvcBaseCT<StatisticsFragment, StatisticsViews>(owner, views) {
 
-    init {
-        statisticsView.presenter = this
-    }
+    val tasksRepository: TasksDataSource by lazy { Injection.provideTasksRepository(activity!!.applicationContext) }
 
-    override fun start() {
+    override fun onCreated() {
         loadStatistics()
     }
 
     private fun loadStatistics() {
-        statisticsView.setProgressIndicator(true)
+        views.setProgressIndicator(true)
 
         // The network request might be handled in a different thread so make sure Espresso knows
         // that the app is busy until the response is handled.
@@ -58,19 +37,19 @@ class StatisticsPresenter(
                     EspressoIdlingResource.decrement() // Set app as idle.
                 }
                 // The view may not be able to handle UI updates anymore
-                if (!statisticsView.isActive) {
+                if (!owner.isAvailable()) {
                     return
                 }
-                statisticsView.setProgressIndicator(false)
-                statisticsView.showStatistics(activeTasks, completedTasks)
+                views.setProgressIndicator(false)
+                views.showStatistics(activeTasks, completedTasks)
             }
 
             override fun onDataNotAvailable() {
                 // The view may not be able to handle UI updates anymore
-                if (!statisticsView.isActive) {
+                if (!owner.isAvailable()) {
                     return
                 }
-                statisticsView.showLoadingStatisticsError()
+                views.showLoadingStatisticsError()
             }
         })
     }

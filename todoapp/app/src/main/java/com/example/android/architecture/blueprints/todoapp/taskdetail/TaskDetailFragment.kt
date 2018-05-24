@@ -21,17 +21,11 @@ import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.CheckBox
 import android.widget.TextView
 import com.example.android.architecture.blueprints.todoapp.R
-import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity
-import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskFragment
+import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskActivity
 import com.example.android.architecture.blueprints.todoapp.util.showSnackBar
 
 /**
@@ -42,7 +36,7 @@ class TaskDetailFragment : Fragment(), TaskDetailContract.View {
     private lateinit var detailTitle: TextView
     private lateinit var detailDescription: TextView
     private lateinit var detailCompleteStatus: CheckBox
-    
+
     override lateinit var presenter: TaskDetailContract.Presenter
 
     override var isActive: Boolean = false
@@ -120,7 +114,7 @@ class TaskDetailFragment : Fragment(), TaskDetailContract.View {
 
     override fun showEditTask(taskId: String) {
         val intent = Intent(context, AddEditTaskActivity::class.java)
-        intent.putExtra(AddEditTaskFragment.ARGUMENT_EDIT_TASK_ID, taskId)
+        intent.putExtra(AddEditTaskActivity.ARGUMENT_EDIT_TASK_ID, taskId)
         startActivityForResult(intent, REQUEST_EDIT_TASK)
     }
 

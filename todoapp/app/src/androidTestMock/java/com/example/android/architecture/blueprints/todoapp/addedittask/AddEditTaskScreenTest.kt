@@ -38,6 +38,7 @@ import com.example.android.architecture.blueprints.todoapp.TestUtils
 import com.example.android.architecture.blueprints.todoapp.data.FakeTasksRemoteDataSource
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
+import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskActivity
 import org.hamcrest.Description
 import org.junit.Rule
 import org.junit.Test
@@ -113,7 +114,7 @@ import org.junit.runner.RunWith
         val intent = Intent(InstrumentationRegistry.getInstrumentation()
                 .targetContext, AddEditTaskActivity::class.java)
                 .apply {
-                    putExtra(AddEditTaskFragment.ARGUMENT_EDIT_TASK_ID, taskId)
+                    putExtra(AddEditTaskActivity.ARGUMENT_EDIT_TASK_ID, taskId)
                 }
         activityTestRule.launchActivity(intent)
     }

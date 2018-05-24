@@ -14,6 +14,9 @@ class MainCT(owner: MainActivity, views: MainViews) : SvcBaseCT<MainActivity, Ma
     override fun onClickStatisticMenu() {
         owner.showStatisticFragment()
     }
+    override fun onClickTaskListMenu() {
+        owner.showTaskList()
+    }
 
     override fun onClickFabTaskAdd() {
         val fragment = owner.contentFragment
