@@ -23,7 +23,7 @@ class TaskDetailActivity : SvcBaseActivity<TaskDetailViews, TaskDetailCT>() {
         /**
          * we should set taskId before super onCreate
          * because createControlTower will be called on super.onCreate()
-         * and taskId is non null String type.
+         * and taskId is non null String type in constructor of TaskDetailCT
          */
         taskId = intent.getStringExtra(EXTRA_TASK_ID)
 
