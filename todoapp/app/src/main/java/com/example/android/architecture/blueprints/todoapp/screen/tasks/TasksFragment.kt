@@ -8,7 +8,6 @@ import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.screen.MainActivity
 import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskActivity
 import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailActivity
-import com.example.android.architecture.blueprints.todoapp.tasks.TasksFilterType
 import com.naver.android.svc.core.SvcBaseFragment
 
 /**

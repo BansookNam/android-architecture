@@ -5,7 +5,6 @@ import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
 import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskActivity
-import com.example.android.architecture.blueprints.todoapp.tasks.TasksFilterType
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
 import com.naver.android.svc.core.SvcBaseCT
 import java.util.*
