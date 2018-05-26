@@ -2,6 +2,7 @@ package com.example.android.architecture.blueprints.todoapp.screen
 
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
+import android.view.Gravity
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.util.setupActionBar
 import com.naver.android.svc.core.views.UseCaseViews
@@ -61,5 +62,14 @@ class MainViews(owner: MainActivity) : UseCaseViews<MainActivity, MainUseCase>(o
 
     fun showFab() {
         fab.show()
+    }
+
+    override fun onBackPressed(): Boolean {
+        return if (drawerLayout.isDrawerOpen(Gravity.START)) {
+            drawerLayout.closeDrawers()
+            true
+        } else {
+            super.onBackPressed()
+        }
     }
 }

@@ -27,7 +27,7 @@ class TaskDetailCT(owner: TaskDetailActivity, views: TaskDetailViews, val taskId
             override fun onTaskLoaded(task: Task) {
                 with(views) {
                     // The view may not be able to handle UI updates anymore
-                    if (!owner.isAvailable()) {
+                    if (!owner.isActive) {
                         return@onTaskLoaded
                     }
                     setLoadingIndicator(false)
@@ -38,7 +38,7 @@ class TaskDetailCT(owner: TaskDetailActivity, views: TaskDetailViews, val taskId
             override fun onDataNotAvailable() {
                 with(views) {
                     // The view may not be able to handle UI updates anymore
-                    if (!owner.isAvailable()) {
+                    if (!owner.isActive) {
                         return@onDataNotAvailable
                     }
                     showMissingTask()

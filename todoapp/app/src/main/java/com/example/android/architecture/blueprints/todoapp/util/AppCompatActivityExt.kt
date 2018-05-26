@@ -23,23 +23,40 @@ import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 
-/**
- * The `fragment` is added to the container view with id `frameId`. The operation is
- * performed by the `fragmentManager`.
- */
+
+const val ROOT_NAME = "root"
+
+fun AppCompatActivity.replaceRootFragmentInActivity(fragment: Fragment, @IdRes frameId: Int) {
+    replaceFragmentInActivity(fragment, frameId, ROOT_NAME, false)
+}
+
 fun AppCompatActivity.replaceFragmentInActivity(fragment: Fragment, @IdRes frameId: Int) {
+    replaceFragmentInActivity(fragment, frameId, fragment.javaClass.simpleName, true)
+}
+
+fun AppCompatActivity.replaceFragmentInActivity(fragment: Fragment, @IdRes frameId: Int, tag: String, addToBackStack: Boolean) {
     supportFragmentManager.transact {
-        replace(frameId, fragment)
+        replace(frameId, fragment, tag)
+        if (addToBackStack) {
+            val previousTag = supportFragmentManager.findFragmentById(frameId).tag
+            addToBackStack(previousTag)
+        }
     }
+}
+
+fun AppCompatActivity.clearAllFragments() {
+    supportFragmentManager.popBackStack(ROOT_NAME, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 }
 
 /**
  * The `fragment` is added to the container view with tag. The operation is
  * performed by the `fragmentManager`.
  */
-fun AppCompatActivity.addFragmentToActivity(fragment: Fragment, tag: String) {
+fun AppCompatActivity.addFragmentToActivity(fragment: Fragment, @IdRes frameId: Int, tag: String) {
     supportFragmentManager.transact {
-        add(fragment, tag)
+        val previousTag = supportFragmentManager.findFragmentById(frameId).tag
+        add(frameId, fragment, tag)
+        addToBackStack(previousTag)
     }
 }
 

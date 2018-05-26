@@ -34,6 +34,7 @@ import android.view.Gravity
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.TestUtils.getToolbarNavigationContentDescription
 import com.example.android.architecture.blueprints.todoapp.custom.action.NavigationViewActions.navigateTo
+import com.example.android.architecture.blueprints.todoapp.screen.MainActivity
 import junit.framework.Assert.fail
 import org.junit.Rule
 import org.junit.Test
@@ -55,7 +56,7 @@ class AppNavigationTest {
      * Rules are interceptors which are executed for each test method and are important building
      * blocks of Junit tests.
      */
-    @Rule @JvmField var activityTestRule = ActivityTestRule(TasksActivity::class.java)
+    @Rule @JvmField var activityTestRule = ActivityTestRule(MainActivity::class.java)
 
     @Test fun clickOnStatisticsNavigationItem_ShowsStatisticsScreen() {
         openStatisticsScreen()

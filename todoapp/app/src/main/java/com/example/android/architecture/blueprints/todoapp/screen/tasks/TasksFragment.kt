@@ -31,8 +31,8 @@ class TasksFragment : SvcBaseFragment<TasksViews, TasksCT>() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState?.apply {
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState.apply {
             putSerializable(CURRENT_FILTERING_KEY, ct.currentFiltering)
         })
     }
@@ -52,6 +52,8 @@ class TasksFragment : SvcBaseFragment<TasksViews, TasksCT>() {
 
     private fun showFilteringPopUpMenu() {
         val activity = activity ?: return
+        val context = context ?: return
+
         PopupMenu(context, activity.findViewById(R.id.menu_filter)).apply {
             menuInflater.inflate(R.menu.filter_tasks, menu)
             setOnMenuItemClickListener { item ->

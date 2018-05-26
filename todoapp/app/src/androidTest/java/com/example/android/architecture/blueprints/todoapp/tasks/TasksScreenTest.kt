@@ -44,6 +44,7 @@ import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.TestUtils
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
+import com.example.android.architecture.blueprints.todoapp.screen.MainActivity
 import com.google.common.base.Preconditions.checkArgument
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -71,7 +72,7 @@ import org.junit.runner.RunWith
      * blocks of Junit tests.
      */
     @Rule @JvmField var tasksActivityTestRule = object :
-            ActivityTestRule<TasksActivity>(TasksActivity::class.java) {
+            ActivityTestRule<MainActivity>(MainActivity::class.java) {
 
         /**
          * To avoid a long list of tasks and the need to scroll through the list to find a

@@ -3,13 +3,13 @@ package com.example.android.architecture.blueprints.todoapp.screen
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.MenuItem
-import android.widget.TextView
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.screen.statistics.StatisticsFragment
 import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksFragment
+import com.example.android.architecture.blueprints.todoapp.util.clearAllFragments
 import com.example.android.architecture.blueprints.todoapp.util.replaceFragmentInActivity
+import com.example.android.architecture.blueprints.todoapp.util.replaceRootFragmentInActivity
 import com.naver.android.svc.core.SvcBaseActivity
-import com.naver.android.svc.core.SvcBaseFragment
 
 /**
  * @author bs.nam@navercorp.com
@@ -26,7 +26,7 @@ class MainActivity : SvcBaseActivity<MainViews, MainCT>() {
 
         supportFragmentManager.findFragmentById(R.id.contentFrame)
                 as TasksFragment? ?: TasksFragment().also {
-            replaceFragmentInActivity(it, R.id.contentFrame)
+            replaceRootFragmentInActivity(it, R.id.contentFrame)
         }
     }
 
@@ -39,9 +39,18 @@ class MainActivity : SvcBaseActivity<MainViews, MainCT>() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onBackPressed() {
+        val currentFragment = contentFragment
+        if (currentFragment !is TasksFragment) {
+            showTaskList()
+        } else {
+            return super.onBackPressed()
+        }
+    }
+
     fun showStatisticFragment() {
         val currentFragment = contentFragment
-        if(currentFragment !is StatisticsFragment){
+        if (currentFragment !is StatisticsFragment) {
             views.hideFab()
             replaceFragmentInActivity(StatisticsFragment(), R.id.contentFrame)
         }
@@ -49,9 +58,9 @@ class MainActivity : SvcBaseActivity<MainViews, MainCT>() {
 
     fun showTaskList() {
         val currentFragment = contentFragment
-        if(currentFragment !is TasksFragment){
+        if (currentFragment !is TasksFragment) {
             views.showFab()
-            replaceFragmentInActivity(TasksFragment(), R.id.contentFrame)
+            clearAllFragments()
         }
     }
 }

@@ -18,10 +18,6 @@ class TasksViews(owner: TasksFragment) : UseCaseViews<TasksFragment, TasksUseCas
     override val layoutResId: Int
         get() = R.layout.fragment_tasks
 
-
-    var isActive: Boolean = false
-        get() = owner.isAvailable()
-
     val noTasksView by lazy { owner.noTasks }
     val noTaskIcon by lazy { owner.noTasksIcon }
     val noTaskMainView by lazy { owner.noTasksMain }
@@ -60,7 +56,7 @@ class TasksViews(owner: TasksFragment) : UseCaseViews<TasksFragment, TasksUseCas
     }
 
     fun setLoadingIndicator(active: Boolean) {
-        if (isDestroyed()) {
+        if (isDestroyed) {
             return
         }
 

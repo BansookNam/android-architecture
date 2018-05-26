@@ -37,7 +37,7 @@ class StatisticsCT(owner: StatisticsFragment, views: StatisticsViews) : SvcBaseC
                     EspressoIdlingResource.decrement() // Set app as idle.
                 }
                 // The view may not be able to handle UI updates anymore
-                if (!owner.isAvailable()) {
+                if (!owner.isActive) {
                     return
                 }
                 views.setProgressIndicator(false)
@@ -46,7 +46,7 @@ class StatisticsCT(owner: StatisticsFragment, views: StatisticsViews) : SvcBaseC
 
             override fun onDataNotAvailable() {
                 // The view may not be able to handle UI updates anymore
-                if (!owner.isAvailable()) {
+                if (!owner.isActive) {
                     return
                 }
                 views.showLoadingStatisticsError()

@@ -1,11 +1,11 @@
 package com.example.android.architecture.blueprints.todoapp.screen.tasks
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
-import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskActivity
-import com.example.android.architecture.blueprints.todoapp.screen.taskdetail.TaskDetailActivity
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
 import com.naver.android.svc.core.SvcBaseCT
 import java.util.*
@@ -19,8 +19,15 @@ class TasksCT(owner: TasksFragment, views: TasksViews) : SvcBaseCT<TasksFragment
     private var firstLoad = true
     private val tasksRepository by lazy { Injection.provideTasksRepository(activity!!.applicationContext) }
 
+    private val viewModel = ViewModelProviders.of(owner).get(TasksViewModel::class.java)
+
     override fun onCreated() {
         loadTasks(false)
+        viewModel.tasks.observe(owner, Observer<MutableList<Task>> { task ->
+            task ?: return@Observer
+            views.setLoadingIndicator(false)
+            processTasks(task)
+        })
     }
 
     fun result(requestCode: Int, resultCode: Int) {
@@ -104,19 +111,12 @@ class TasksCT(owner: TasksFragment, views: TasksViews) : SvcBaseCT<TasksFragment
                     }
                 }
                 // The view may not be able to handle UI updates anymore
-                if (!views.isActive) {
-                    return
-                }
-                if (showLoadingUI) {
-                    views.setLoadingIndicator(false)
-                }
-
-                processTasks(tasksToShow)
+                viewModel.tasks.value = tasksToShow
             }
 
             override fun onDataNotAvailable() {
                 // The view may not be able to handle UI updates anymore
-                if (!views.isActive) {
+                if (!owner.isActive) {
                     return
                 }
                 views.showLoadingTasksError()

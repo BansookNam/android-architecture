@@ -10,9 +10,6 @@ import com.naver.android.svc.core.SvcBaseActivity
  */
 class AddEditTaskActivity : SvcBaseActivity<AddEditTaskViews, AddEditTaskCT>() {
 
-    var isActive = false
-        get() = !isFinishing
-
     override fun createControlTower() = AddEditTaskCT(this, views)
     override fun createViews() = AddEditTaskViews(this)
 
