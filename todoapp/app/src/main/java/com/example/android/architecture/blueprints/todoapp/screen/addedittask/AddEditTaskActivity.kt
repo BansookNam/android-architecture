@@ -2,7 +2,6 @@ package com.example.android.architecture.blueprints.todoapp.screen.addedittask
 
 import android.app.Activity
 import android.os.Bundle
-import android.os.PersistableBundle
 import com.naver.android.svc.core.SvcBaseActivity
 
 /**
@@ -13,9 +12,9 @@ class AddEditTaskActivity : SvcBaseActivity<AddEditTaskViews, AddEditTaskCT>() {
     override fun createControlTower() = AddEditTaskCT(this, views)
     override fun createViews() = AddEditTaskViews(this)
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         val taskId = intent.getStringExtra(ARGUMENT_EDIT_TASK_ID)
-        views.taskId = taskId
+        views.isEditMode = taskId != null
         ct.taskId = taskId
 
         val shouldLoadDataFromRepo =
@@ -25,7 +24,7 @@ class AddEditTaskActivity : SvcBaseActivity<AddEditTaskViews, AddEditTaskCT>() {
                         ?: true
         ct.isDataMissing = shouldLoadDataFromRepo
 
-        super.onCreate(savedInstanceState, persistentState)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

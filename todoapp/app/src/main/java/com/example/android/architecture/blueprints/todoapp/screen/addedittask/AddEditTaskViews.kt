@@ -15,12 +15,11 @@ class AddEditTaskViews(owner: AddEditTaskActivity) : UseCaseViews<AddEditTaskAct
     val title by lazy { owner.add_task_title }
     val description by lazy { owner.add_task_description }
 
-    var taskId: String? = null
-
     override val layoutResId: Int
         get() = R.layout.activity_add_edit_task
     val isActive: Boolean
         get() = owner.isActive
+    var isEditMode: Boolean = false
 
     override fun onCreated() {
 
@@ -28,7 +27,7 @@ class AddEditTaskViews(owner: AddEditTaskActivity) : UseCaseViews<AddEditTaskAct
         owner.setupActionBar(R.id.toolbar) {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
-            setTitle(if (taskId == null) R.string.add_task else R.string.edit_task)
+            setTitle(if (isEditMode) R.string.edit_task else R.string.add_task)
         }
 
         owner.fab_edit_task_done.setOnClickListener {
