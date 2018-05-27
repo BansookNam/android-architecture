@@ -1,5 +1,6 @@
 package com.example.android.architecture.blueprints.todoapp.screen
 
+import android.support.annotation.StringRes
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.view.Gravity
@@ -37,6 +38,10 @@ class MainViews(owner: MainActivity) : UseCaseViews<MainActivity, MainUseCase>(o
         setupDrawerContent(owner.nav_view)
     }
 
+    fun setTitle(@StringRes title: Int) {
+        owner.supportActionBar?.setTitle(title)
+    }
+
     fun openDrawer() {
         drawerLayout.openDrawer(GravityCompat.START)
     }
@@ -47,7 +52,6 @@ class MainViews(owner: MainActivity) : UseCaseViews<MainActivity, MainUseCase>(o
             when (menuItem.itemId) {
                 R.id.statistics_navigation_menu_item -> usecase.onClickStatisticMenu()
                 R.id.list_navigation_menu_item -> usecase.onClickTaskListMenu()
-
             }
             // Close the navigation drawer when an item is selected.
             menuItem.isChecked = true

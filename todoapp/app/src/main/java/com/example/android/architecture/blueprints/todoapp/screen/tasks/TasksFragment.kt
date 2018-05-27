@@ -5,15 +5,17 @@ import android.os.Bundle
 import android.support.v7.widget.PopupMenu
 import android.view.MenuItem
 import com.example.android.architecture.blueprints.todoapp.R
-import com.example.android.architecture.blueprints.todoapp.screen.MainActivity
 import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskActivity
+import com.example.android.architecture.blueprints.todoapp.screen.base.BaseFragment
 import com.example.android.architecture.blueprints.todoapp.screen.taskdetail.TaskDetailActivity
-import com.naver.android.svc.core.SvcBaseFragment
 
 /**
  * @author bs.nam@navercorp.com
  */
-class TasksFragment : SvcBaseFragment<TasksViews, TasksCT>() {
+class TasksFragment : BaseFragment<TasksViews, TasksCT>() {
+
+    override val fragmentTitleResId: Int
+        get() = R.string.list_title
 
     private val CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY"
 
@@ -23,7 +25,6 @@ class TasksFragment : SvcBaseFragment<TasksViews, TasksCT>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity as MainActivity).supportActionBar?.setTitle(R.string.list_title)
         setHasOptionsMenu(true)
         if (savedInstanceState != null) {
             ct.currentFiltering = savedInstanceState.getSerializable(CURRENT_FILTERING_KEY)
