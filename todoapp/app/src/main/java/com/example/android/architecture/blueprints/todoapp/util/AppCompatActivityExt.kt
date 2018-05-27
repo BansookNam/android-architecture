@@ -23,29 +23,27 @@ import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 
-
-const val ROOT_NAME = "root"
+const val BACK_STACK_ROOT_NAME = "root_fragment"
 
 fun AppCompatActivity.replaceRootFragmentInActivity(fragment: Fragment, @IdRes frameId: Int) {
-    replaceFragmentInActivity(fragment, frameId, ROOT_NAME, false)
+    replaceFragmentInActivity(fragment, frameId, false)
 }
 
 fun AppCompatActivity.replaceFragmentInActivity(fragment: Fragment, @IdRes frameId: Int) {
-    replaceFragmentInActivity(fragment, frameId, fragment.javaClass.simpleName, true)
+    replaceFragmentInActivity(fragment, frameId, true)
 }
 
-fun AppCompatActivity.replaceFragmentInActivity(fragment: Fragment, @IdRes frameId: Int, tag: String, addToBackStack: Boolean) {
+fun AppCompatActivity.replaceFragmentInActivity(fragment: Fragment, @IdRes frameId: Int, addToBackStack: Boolean) {
     supportFragmentManager.transact {
-        replace(frameId, fragment, tag)
+        replace(frameId, fragment, fragment.javaClass.simpleName)
         if (addToBackStack) {
-            val previousTag = supportFragmentManager.findFragmentById(frameId).tag
-            addToBackStack(previousTag)
+            addToBackStack(BACK_STACK_ROOT_NAME)
         }
     }
 }
 
 fun AppCompatActivity.clearAllFragments() {
-    supportFragmentManager.popBackStack(ROOT_NAME, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    supportFragmentManager.popBackStack(BACK_STACK_ROOT_NAME, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 }
 
 /**
@@ -56,7 +54,7 @@ fun AppCompatActivity.addFragmentToActivity(fragment: Fragment, @IdRes frameId: 
     supportFragmentManager.transact {
         val previousTag = supportFragmentManager.findFragmentById(frameId).tag
         add(frameId, fragment, tag)
-        addToBackStack(previousTag)
+        addToBackStack(BACK_STACK_ROOT_NAME)
     }
 }
 
