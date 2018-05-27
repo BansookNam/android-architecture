@@ -71,11 +71,11 @@ class TaskDetailViews(owner: TaskDetailActivity) : UseCaseViews<TaskDetailActivi
     }
 
     fun showTaskMarkedComplete() {
-        rootView?.showSnackBar(getString(R.string.task_marked_complete), Snackbar.LENGTH_LONG)
+        detailTitle.showSnackBar(getString(R.string.task_marked_complete), Snackbar.LENGTH_LONG)
     }
 
     fun showTaskMarkedActive() {
-        rootView?.showSnackBar(getString(R.string.task_marked_active), Snackbar.LENGTH_LONG)
+        detailTitle.showSnackBar(getString(R.string.task_marked_active), Snackbar.LENGTH_LONG)
     }
 
 
