@@ -1,25 +1,25 @@
 package com.example.android.architecture.blueprints.todoapp.screen
 
 import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksFragment
-import com.naver.android.svc.core.SvcBaseCT
+import com.naver.android.svc.core.SvcCT
 
 /**
  * @author bs.nam@navercorp.com
  */
-class MainCT(owner: MainActivity, views: MainViews) : SvcBaseCT<MainActivity, MainViews>(owner, views), MainUseCase {
+class MainCT(screen: MainActivity, views: MainViews) : SvcCT<MainActivity, MainViews>(screen, views), MainUseCase {
 
     override fun onCreated() {
     }
 
     override fun onClickStatisticMenu() {
-        owner.showStatisticFragment()
+        screen.showStatisticFragment()
     }
     override fun onClickTaskListMenu() {
-        owner.showTaskList()
+        screen.showTaskList()
     }
 
     override fun onClickFabTaskAdd() {
-        val fragment = owner.contentFragment
+        val fragment = screen.contentFragment
         if (fragment is TasksFragment) {
             fragment.startEditTaskActivity()
         }

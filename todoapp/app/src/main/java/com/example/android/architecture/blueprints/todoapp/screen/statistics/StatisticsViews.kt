@@ -1,15 +1,15 @@
 package com.example.android.architecture.blueprints.todoapp.screen.statistics
 
 import com.example.android.architecture.blueprints.todoapp.R
-import com.naver.android.svc.core.views.SvcBaseViews
+import com.naver.android.svc.core.views.SvcViews
 import kotlinx.android.synthetic.main.fragment_statistics.*
 
 /**
  * @author bs.nam@navercorp.com
  */
-class StatisticsViews(owner: StatisticsFragment) : SvcBaseViews<StatisticsFragment>(owner) {
+class StatisticsViews(screen: StatisticsFragment) : SvcViews<StatisticsFragment>(screen) {
 
-    val statisticsTV by lazy { owner.statistics }
+    private val statisticsTV by lazy { screen.statistics }
 
     override val layoutResId: Int
         get() = R.layout.fragment_statistics

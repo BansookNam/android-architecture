@@ -7,23 +7,23 @@ import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
-import com.naver.android.svc.core.SvcBaseCT
+import com.naver.android.svc.core.SvcCT
 import java.util.*
 
 /**
  * @author bs.nam@navercorp.com
  */
-class TasksCT(owner: TasksFragment, views: TasksViews) : SvcBaseCT<TasksFragment, TasksViews>(owner, views), TasksUseCase {
+class TasksCT(screen: TasksFragment, views: TasksViews) : SvcCT<TasksFragment, TasksViews>(screen, views), TasksUseCase {
 
     var currentFiltering: TasksFilterType = TasksFilterType.ACTIVE_TASKS
     private var firstLoad = true
     private val tasksRepository by lazy { Injection.provideTasksRepository(activity!!.applicationContext) }
 
-    private val viewModel = ViewModelProviders.of(owner).get(TasksViewModel::class.java)
+    private val viewModel = ViewModelProviders.of(screen).get(TasksViewModel::class.java)
 
     override fun onCreated() {
         loadTasks(false)
-        viewModel.tasks.observe(owner, Observer<MutableList<Task>> { task ->
+        viewModel.tasks.observe(screen, Observer<MutableList<Task>> { task ->
             task ?: return@Observer
             views.setLoadingIndicator(false)
             processTasks(task)
@@ -60,7 +60,7 @@ class TasksCT(owner: TasksFragment, views: TasksViews) : SvcBaseCT<TasksFragment
     }
 
     override fun onClickTaskAdd() {
-        owner.startEditTaskActivity()
+        screen.startEditTaskActivity()
     }
 
     fun loadTasks(forceUpdate: Boolean) {
@@ -116,7 +116,7 @@ class TasksCT(owner: TasksFragment, views: TasksViews) : SvcBaseCT<TasksFragment
 
             override fun onDataNotAvailable() {
                 // The view may not be able to handle UI updates anymore
-                if (!owner.isActive) {
+                if (!screen.isActive) {
                     return
                 }
                 views.showLoadingTasksError()
@@ -154,7 +154,7 @@ class TasksCT(owner: TasksFragment, views: TasksViews) : SvcBaseCT<TasksFragment
     }
 
     fun openTaskDetails(requestedTask: Task) {
-        owner.startTaskDetailActivity(requestedTask.id)
+        screen.startTaskDetailActivity(requestedTask.id)
     }
 
     fun completeTask(completedTask: Task) {

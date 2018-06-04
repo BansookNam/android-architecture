@@ -3,12 +3,12 @@ package com.example.android.architecture.blueprints.todoapp.screen.addedittask
 import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
-import com.naver.android.svc.core.SvcBaseCT
+import com.naver.android.svc.core.SvcCT
 
 /**
  * @author bs.nam@navercorp.com
  */
-class AddEditTaskCT(owner: AddEditTaskActivity, views: AddEditTaskViews) : SvcBaseCT<AddEditTaskActivity, AddEditTaskViews>(owner, views), AddEditTaskUseCase, TasksDataSource.GetTaskCallback {
+class AddEditTaskCT(screen: AddEditTaskActivity, views: AddEditTaskViews) : SvcCT<AddEditTaskActivity, AddEditTaskViews>(screen, views), AddEditTaskUseCase, TasksDataSource.GetTaskCallback {
 
     var isDataMissing: Boolean = false
     var taskId: String? = null
@@ -56,14 +56,14 @@ class AddEditTaskCT(owner: AddEditTaskActivity, views: AddEditTaskViews) : SvcBa
             views.showEmptyTaskError()
         } else {
             tasksRepository.saveTask(newTask)
-            owner.showTasksList()
+            screen.showTasksList()
         }
     }
 
     private fun updateTask(title: String, description: String) {
         val taskId = taskId ?: throw RuntimeException("updateTask() was called but task is new.")
         tasksRepository.saveTask(Task(title, description, taskId))
-        owner.showTasksList() // After an edit, go back to the list.
+        screen.showTasksList() // After an edit, go back to the list.
     }
 
     override fun onClickFabEditTaskDone(title: String, description: String) {

@@ -12,34 +12,34 @@ import kotlinx.android.synthetic.main.activity_main.*
 /**
  * @author bs.nam@navercorp.com
  */
-class MainViews(owner: MainActivity) : UseCaseViews<MainActivity, MainUseCase>(owner) {
+class MainViews(screen: MainActivity) : UseCaseViews<MainActivity, MainUseCase>(screen) {
 
-    val drawerLayout by lazy { owner.drawer_layout }
-    val toolbar by lazy { owner.toolbar }
-    val fab by lazy { owner.fab_add_task }
+    val drawerLayout by lazy { screen.drawer_layout }
+    val toolbar by lazy { screen.toolbar }
+    val fab by lazy { screen.fab_add_task }
 
     override val layoutResId: Int
         get() = R.layout.activity_main
 
     override fun onCreated() {
 
-        owner.setupActionBar(R.id.toolbar) {
+        screen.setupActionBar(R.id.toolbar) {
             setHomeAsUpIndicator(R.drawable.ic_menu)
             setDisplayHomeAsUpEnabled(true)
         }
 
         fab.apply {
             setImageResource(R.drawable.ic_add)
-            setOnClickListener { usecase.onClickFabTaskAdd() }
+            setOnClickListener { useCase.onClickFabTaskAdd() }
         }
 
 
         drawerLayout.setStatusBarBackground(R.color.colorPrimaryDark)
-        setupDrawerContent(owner.nav_view)
+        setupDrawerContent(screen.nav_view)
     }
 
     fun setTitle(@StringRes title: Int) {
-        owner.supportActionBar?.setTitle(title)
+        screen.supportActionBar?.setTitle(title)
     }
 
     fun openDrawer() {
@@ -50,8 +50,8 @@ class MainViews(owner: MainActivity) : UseCaseViews<MainActivity, MainUseCase>(o
         navigationView.setNavigationItemSelectedListener { menuItem ->
 
             when (menuItem.itemId) {
-                R.id.statistics_navigation_menu_item -> usecase.onClickStatisticMenu()
-                R.id.list_navigation_menu_item -> usecase.onClickTaskListMenu()
+                R.id.statistics_navigation_menu_item -> useCase.onClickStatisticMenu()
+                R.id.list_navigation_menu_item -> useCase.onClickTaskListMenu()
             }
             // Close the navigation drawer when an item is selected.
             menuItem.isChecked = true

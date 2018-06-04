@@ -9,12 +9,12 @@ import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksFra
 import com.example.android.architecture.blueprints.todoapp.util.clearAllFragments
 import com.example.android.architecture.blueprints.todoapp.util.replaceFragmentInActivity
 import com.example.android.architecture.blueprints.todoapp.util.replaceRootFragmentInActivity
-import com.naver.android.svc.core.SvcBaseActivity
+import com.naver.android.svc.core.screen.SvcActivity
 
 /**
  * @author bs.nam@navercorp.com
  */
-class MainActivity : SvcBaseActivity<MainViews, MainCT>() {
+class MainActivity : SvcActivity<MainViews, MainCT>() {
     val contentFragment: BaseFragment<*, *>
         get() = supportFragmentManager.findFragmentById(R.id.contentFrame) as BaseFragment<*, *>
 

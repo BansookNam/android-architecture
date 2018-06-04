@@ -6,40 +6,39 @@ import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.util.showSnackBar
 import com.naver.android.svc.core.views.UseCaseViews
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_tasks.*
 import java.util.*
 
 /**
  * @author bs.nam@navercorp.com
  */
-class TasksViews(owner: TasksFragment) : UseCaseViews<TasksFragment, TasksUseCase>(owner) {
+class TasksViews(screen: TasksFragment) : UseCaseViews<TasksFragment, TasksUseCase>(screen) {
 
     override val layoutResId: Int
         get() = R.layout.fragment_tasks
 
-    val noTasksView by lazy { owner.noTasks }
-    val noTaskIcon by lazy { owner.noTasksIcon }
-    val noTaskMainView by lazy { owner.noTasksMain }
-    val noTaskAddView by lazy { owner.noTasksAdd }
-    val tasksView by lazy { owner.tasksLL }
-    val filteringLabelView by lazy { owner.filteringLabel }
+    val noTasksView by lazy { screen.noTasks }
+    val noTaskIcon by lazy { screen.noTasksIcon }
+    val noTaskMainView by lazy { screen.noTasksMain }
+    val noTaskAddView by lazy { screen.noTasksAdd }
+    val tasksView by lazy { screen.tasksLL }
+    val filteringLabelView by lazy { screen.filteringLabel }
 
     /**
      * should initialize "onCreated" because useCase instance setted when "onCreated"
      * or use lazy initialize.
      */
-    val listAdapter by lazy { TasksAdapter(ArrayList(0), usecase) }
+    val listAdapter by lazy { TasksAdapter(ArrayList(0), useCase) }
 
 
     override fun onCreated() {
 
-        val listView = owner.tasks_list.apply {
+        val listView = screen.tasks_list.apply {
             adapter = listAdapter
         }
 
         // Set up progress indicator
-        owner.refresh_layout.apply {
+        screen.refresh_layout.apply {
             setColorSchemeColors(
                     getColor(R.color.colorPrimary),
                     getColor(R.color.colorAccent),
@@ -47,11 +46,11 @@ class TasksViews(owner: TasksFragment) : UseCaseViews<TasksFragment, TasksUseCas
             )
             // Set the scrolling view in the custom SwipeRefreshLayout.
             scrollUpChild = listView
-            setOnRefreshListener { usecase.onRefresh() }
+            setOnRefreshListener { useCase.onRefresh() }
         }
 
         noTaskAddView.setOnClickListener {
-            usecase.onClickTaskAdd()
+            useCase.onClickTaskAdd()
         }
     }
 
@@ -60,7 +59,7 @@ class TasksViews(owner: TasksFragment) : UseCaseViews<TasksFragment, TasksUseCas
             return
         }
 
-        with(owner.refresh_layout) {
+        with(screen.refresh_layout) {
             // Make sure setRefreshing() is called after the layout is done with everything else.
             post { isRefreshing = active }
         }

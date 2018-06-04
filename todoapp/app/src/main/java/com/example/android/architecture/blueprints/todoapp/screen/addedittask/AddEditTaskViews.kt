@@ -10,28 +10,28 @@ import kotlinx.android.synthetic.main.activity_add_edit_task.*
 /**
  * @author bs.nam@navercorp.com
  */
-class AddEditTaskViews(owner: AddEditTaskActivity) : UseCaseViews<AddEditTaskActivity, AddEditTaskUseCase>(owner) {
+class AddEditTaskViews(screen: AddEditTaskActivity) : UseCaseViews<AddEditTaskActivity, AddEditTaskUseCase>(screen) {
 
-    val title by lazy { owner.add_task_title }
-    val description by lazy { owner.add_task_description }
+    val title by lazy { screen.add_task_title }
+    val description by lazy { screen.add_task_description }
 
     override val layoutResId: Int
         get() = R.layout.activity_add_edit_task
     val isActive: Boolean
-        get() = owner.isActive
+        get() = screen.isActive
     var isEditMode: Boolean = false
 
     override fun onCreated() {
 
         // Set up the toolbar.
-        owner.setupActionBar(R.id.toolbar) {
+        screen.setupActionBar(R.id.toolbar) {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
             setTitle(if (isEditMode) R.string.edit_task else R.string.add_task)
         }
 
-        owner.fab_edit_task_done.setOnClickListener {
-            usecase.onClickFabEditTaskDone(title.text.toString(), description.text.toString())
+        screen.fab_edit_task_done.setOnClickListener {
+            useCase.onClickFabEditTaskDone(title.text.toString(), description.text.toString())
         }
     }
 

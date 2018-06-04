@@ -3,14 +3,14 @@ package com.example.android.architecture.blueprints.todoapp.screen.taskdetail
 import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
-import com.naver.android.svc.core.SvcBaseCT
+import com.naver.android.svc.core.SvcCT
 
 /**
  * @author bs.nam@navercorp.com
  */
-class TaskDetailCT(owner: TaskDetailActivity, views: TaskDetailViews, val taskId: String) : SvcBaseCT<TaskDetailActivity, TaskDetailViews>(owner, views), TaskDetailUseCase {
+class TaskDetailCT(screen: TaskDetailActivity, views: TaskDetailViews, val taskId: String) : SvcCT<TaskDetailActivity, TaskDetailViews>(screen, views), TaskDetailUseCase {
 
-    val tasksRepository: TasksDataSource by lazy { Injection.provideTasksRepository(activity!!.applicationContext) }
+    private val tasksRepository: TasksDataSource by lazy { Injection.provideTasksRepository(activity!!.applicationContext) }
 
     override fun onCreated() {
         openTask()
@@ -27,7 +27,7 @@ class TaskDetailCT(owner: TaskDetailActivity, views: TaskDetailViews, val taskId
             override fun onTaskLoaded(task: Task) {
                 with(views) {
                     // The view may not be able to handle UI updates anymore
-                    if (!owner.isActive) {
+                    if (!screen.isActive) {
                         return@onTaskLoaded
                     }
                     setLoadingIndicator(false)
@@ -38,7 +38,7 @@ class TaskDetailCT(owner: TaskDetailActivity, views: TaskDetailViews, val taskId
             override fun onDataNotAvailable() {
                 with(views) {
                     // The view may not be able to handle UI updates anymore
-                    if (!owner.isActive) {
+                    if (!screen.isActive) {
                         return@onDataNotAvailable
                     }
                     showMissingTask()
@@ -52,7 +52,7 @@ class TaskDetailCT(owner: TaskDetailActivity, views: TaskDetailViews, val taskId
             views.showMissingTask()
             return
         }
-        owner.startEditTastActivity(taskId)
+        screen.startEditTastActivity(taskId)
     }
 
     fun deleteTask() {
@@ -61,7 +61,7 @@ class TaskDetailCT(owner: TaskDetailActivity, views: TaskDetailViews, val taskId
             return
         }
         tasksRepository.deleteTask(taskId)
-        owner.finishAfterDelete()
+        screen.finishAfterDelete()
     }
 
     fun completeTask() {

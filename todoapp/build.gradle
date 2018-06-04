@@ -15,7 +15,7 @@ ext {
     rulesVersion = '1.0.1'
     espressoVersion = '3.0.1'
     roomVersion = "1.0.0"
-    svcVersion = "0.0.1-alpha7"
+    svcVersion = "0.0.1-alpha9"
     constraintLayoutVersion = "1.1.0"
     lifecycleVersion = "1.1.1"
 }

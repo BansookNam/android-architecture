@@ -2,12 +2,12 @@ package com.example.android.architecture.blueprints.todoapp.screen.addedittask
 
 import android.app.Activity
 import android.os.Bundle
-import com.naver.android.svc.core.SvcBaseActivity
+import com.naver.android.svc.core.screen.SvcActivity
 
 /**
  * @author bs.nam@navercorp.com
  */
-class AddEditTaskActivity : SvcBaseActivity<AddEditTaskViews, AddEditTaskCT>() {
+class AddEditTaskActivity : SvcActivity<AddEditTaskViews, AddEditTaskCT>() {
 
     override fun createControlTower() = AddEditTaskCT(this, views)
     override fun createViews() = AddEditTaskViews(this)

@@ -11,11 +11,11 @@ import kotlinx.android.synthetic.main.activity_task_detail.*
 /**
  * @author bs.nam@navercorp.com
  */
-class TaskDetailViews(owner: TaskDetailActivity) : UseCaseViews<TaskDetailActivity, TaskDetailUseCase>(owner) {
+class TaskDetailViews(screen: TaskDetailActivity) : UseCaseViews<TaskDetailActivity, TaskDetailUseCase>(screen) {
 
-    private val detailTitle by lazy { owner.task_detail_title }
-    private val detailDescription by lazy { owner.task_detail_description }
-    private val detailCompleteStatus by lazy { owner.task_detail_complete }
+    private val detailTitle by lazy { screen.task_detail_title }
+    private val detailDescription by lazy { screen.task_detail_description }
+    private val detailCompleteStatus by lazy { screen.task_detail_complete }
 
 
     override val layoutResId: Int
@@ -24,13 +24,13 @@ class TaskDetailViews(owner: TaskDetailActivity) : UseCaseViews<TaskDetailActivi
     override fun onCreated() {
 
         // Set up the toolbar.
-        owner.setupActionBar(R.id.toolbar) {
+        screen.setupActionBar(R.id.toolbar) {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
         }
 
         // Set up floating action button
-        owner.fab_edit_task.setOnClickListener { usecase.onClickFabEditTask() }
+        screen.fab_edit_task.setOnClickListener { useCase.onClickFabEditTask() }
 
     }
 
@@ -62,9 +62,9 @@ class TaskDetailViews(owner: TaskDetailActivity) : UseCaseViews<TaskDetailActivi
             isChecked = complete
             setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
-                    usecase.onTaskCompleteChecked()
+                    useCase.onTaskCompleteChecked()
                 } else {
-                    usecase.onTaskActivateChecked()
+                    useCase.onTaskActivateChecked()
                 }
             }
         }

@@ -7,12 +7,12 @@ import android.view.Menu
 import android.view.MenuItem
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskActivity
-import com.naver.android.svc.core.SvcBaseActivity
+import com.naver.android.svc.core.screen.SvcActivity
 
 /**
  * @author bs.nam@navercorp.com
  */
-class TaskDetailActivity : SvcBaseActivity<TaskDetailViews, TaskDetailCT>() {
+class TaskDetailActivity : SvcActivity<TaskDetailViews, TaskDetailCT>() {
 
     override fun createControlTower() = TaskDetailCT(this, views, taskId!!)
     override fun createViews() = TaskDetailViews(this)

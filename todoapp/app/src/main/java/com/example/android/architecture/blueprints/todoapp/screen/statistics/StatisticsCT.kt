@@ -4,14 +4,14 @@ import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
-import com.naver.android.svc.core.SvcBaseCT
+import com.naver.android.svc.core.SvcCT
 
 /**
  * @author bs.nam@navercorp.com
  */
-class StatisticsCT(owner: StatisticsFragment, views: StatisticsViews) : SvcBaseCT<StatisticsFragment, StatisticsViews>(owner, views) {
+class StatisticsCT(screen: StatisticsFragment, views: StatisticsViews) : SvcCT<StatisticsFragment, StatisticsViews>(screen, views) {
 
-    val tasksRepository: TasksDataSource by lazy { Injection.provideTasksRepository(activity!!.applicationContext) }
+    private val tasksRepository: TasksDataSource by lazy { Injection.provideTasksRepository(activity!!.applicationContext) }
 
     override fun onCreated() {
         loadStatistics()
@@ -37,7 +37,7 @@ class StatisticsCT(owner: StatisticsFragment, views: StatisticsViews) : SvcBaseC
                     EspressoIdlingResource.decrement() // Set app as idle.
                 }
                 // The view may not be able to handle UI updates anymore
-                if (!owner.isActive) {
+                if (!screen.isActive) {
                     return
                 }
                 views.setProgressIndicator(false)
@@ -46,7 +46,7 @@ class StatisticsCT(owner: StatisticsFragment, views: StatisticsViews) : SvcBaseC
 
             override fun onDataNotAvailable() {
                 // The view may not be able to handle UI updates anymore
-                if (!owner.isActive) {
+                if (!screen.isActive) {
                     return
                 }
                 views.showLoadingStatisticsError()
