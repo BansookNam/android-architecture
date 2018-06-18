@@ -45,9 +45,11 @@ class TasksViewModel : ViewModel() {
                 }
                 // The view may not be able to handle UI updates anymore
                 tasks.value = tasksToShow
+                callback.onTasksLoaded(taskList)
             }
 
             override fun onDataNotAvailable() {
+                callback.onDataNotAvailable()
             }
         })
     }
