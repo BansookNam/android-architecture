@@ -19,8 +19,8 @@ class TasksCT(screen: TasksFragment, views: TasksViews) : SvcCT<TasksFragment, T
     private val viewModel = ViewModelProviders.of(screen).get(TasksViewModel::class.java)
 
     override fun onCreated() {
-        loadTasks(true)
         viewModel.initRepository(activity!!.applicationContext)
+        loadTasks(true)
         viewModel.tasks.observe(screen, Observer<MutableList<Task>> { task ->
             task ?: return@Observer
             views.setLoadingIndicator(false)

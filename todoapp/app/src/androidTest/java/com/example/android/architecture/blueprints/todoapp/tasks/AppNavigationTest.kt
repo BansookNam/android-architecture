@@ -23,9 +23,7 @@ import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.contrib.DrawerActions.open
 import android.support.test.espresso.contrib.DrawerMatchers.isClosed
 import android.support.test.espresso.contrib.DrawerMatchers.isOpen
-import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
-import android.support.test.espresso.matcher.ViewMatchers.withContentDescription
-import android.support.test.espresso.matcher.ViewMatchers.withId
+import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.filters.LargeTest
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
@@ -39,6 +37,7 @@ import junit.framework.Assert.fail
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+
 
 /**
  * Tests for the [DrawerLayout] layout component in [TasksActivity] which manages
@@ -61,7 +60,7 @@ class AppNavigationTest {
     @Test fun clickOnStatisticsNavigationItem_ShowsStatisticsScreen() {
         openStatisticsScreen()
 
-        // Check that statistics Activity was opened.
+        // Check that statistics Fragment is opened.
         onView(withId(R.id.statistics)).check(matches(isDisplayed()))
     }
 
@@ -70,14 +69,13 @@ class AppNavigationTest {
 
         openTasksScreen()
 
-        // Check that Tasks Activity was opened.
+        // Check that Tasks Fragment is opened.
         onView(withId(R.id.tasksContainer)).check(matches(isDisplayed()))
     }
 
     @Test fun clickOnAndroidHomeIcon_OpensNavigation() {
         // Check that left drawer is closed at startup
-        onView(withId(R.id.drawer_layout))
-                .check(matches(isClosed(Gravity.START))) // Left Drawer should be closed.
+        checkDrawerLayoutIsClosed() // Left Drawer should be closed.
 
         // Open Drawer
         onView(withContentDescription(getToolbarNavigationContentDescription(
@@ -94,7 +92,7 @@ class AppNavigationTest {
         // Press back to go back to the tasks list
         pressBack()
 
-        // Check that Tasks Activity was restored.
+        // Check that TasksFragment is displayed
         onView(withId(R.id.tasksContainer)).check(matches(isDisplayed()))
     }
 
@@ -135,10 +133,15 @@ class AppNavigationTest {
         // Start tasks list screen.
         onView(withId(R.id.nav_view))
                 .perform(navigateTo(R.id.list_navigation_menu_item))
+
+        waitForClosing()
+
+        checkDrawerLayoutIsClosed()
     }
 
     private fun openStatisticsScreen() {
         // Open Drawer to click on navigation item.
+
         onView(withId(R.id.drawer_layout))
                 .check(matches(isClosed(Gravity.START))) // Left Drawer should be closed.
                 .perform(open()) // Open Drawer
@@ -146,5 +149,24 @@ class AppNavigationTest {
         // Start statistics screen.
         onView(withId(R.id.nav_view))
                 .perform(navigateTo(R.id.statistics_navigation_menu_item))
+
+        waitForClosing()
+
+        //check if drawerLayour is closed
+        checkDrawerLayoutIsClosed() // Left Drawer should be closed.
+
     }
+
+    private fun checkDrawerLayoutIsClosed() {
+        onView(withId(R.id.drawer_layout))
+                .check(matches(isClosed(Gravity.START)))
+    }
+
+    /**
+     * wait until drawer closed for next open
+     */
+    private fun waitForClosing() {
+        Thread.sleep(500)
+    }
+
 }
