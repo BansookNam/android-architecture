@@ -11,6 +11,10 @@ import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingRe
 import java.util.*
 
 class TasksViewModel : ViewModel() {
+    private lateinit var tasksRepository: TasksRepository
+
+    val tasks = MutableLiveData<MutableList<Task>>()
+
     fun initRepository(applicationContext: Context) {
         tasksRepository = Injection.provideTasksRepository(applicationContext)
     }
@@ -65,8 +69,4 @@ class TasksViewModel : ViewModel() {
     fun clearCompletedTasks() {
         tasksRepository.clearCompletedTasks()
     }
-
-    private lateinit var tasksRepository: TasksRepository
-
-    val tasks = MutableLiveData<MutableList<Task>>()
 }
