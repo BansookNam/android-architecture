@@ -3,6 +3,8 @@ package com.example.android.architecture.blueprints.todoapp.screen.tasks
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.PopupMenu
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskActivity
@@ -40,6 +42,10 @@ class TasksFragment : BaseFragment<TasksViews, TasksCT>() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         ct.result(requestCode, resultCode)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
+        inflater.inflate(R.menu.tasks_fragment_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
