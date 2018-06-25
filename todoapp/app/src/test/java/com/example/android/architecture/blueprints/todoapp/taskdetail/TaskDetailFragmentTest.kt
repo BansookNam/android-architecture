@@ -18,6 +18,7 @@ package com.example.android.architecture.blueprints.todoapp.taskdetail
 import com.example.android.architecture.blueprints.todoapp.capture
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
+import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import com.example.android.architecture.blueprints.todoapp.eq
 import com.example.android.architecture.blueprints.todoapp.screen.taskdetail.TaskDetailActivity
 import com.example.android.architecture.blueprints.todoapp.screen.taskdetail.TaskDetailCT
@@ -33,7 +34,7 @@ import org.mockito.MockitoAnnotations
 /**
  * Unit tests for the implementation of [TaskDetailPresenter]
  */
-class TaskDetailPresenterTest {
+class TaskDetailFragmentTest {
 
     private val TITLE_TEST = "title"
 
@@ -49,6 +50,9 @@ class TaskDetailPresenterTest {
     private lateinit var taskDetailViews: TaskDetailViews
     @Mock
     private lateinit var screen: TaskDetailActivity
+
+    @Mock
+    private lateinit var tasksRepository: TasksRepository
 
     /**
      * [ArgumentCaptor] is a powerful Mockito API to capture argument values and use them to
@@ -82,7 +86,8 @@ class TaskDetailPresenterTest {
                 screen, taskDetailViews, ACTIVE_TASK.id).apply {
             onCreated()
         }
-        val tasksRepository = taskDetailCT.tasksRepository
+
+        `when`(taskDetailCT.tasksRepository).thenReturn(tasksRepository)
 
         // Then task is loaded from model, callback is captured and progress indicator is shown
         verify(tasksRepository).getTask(eq(ACTIVE_TASK.id),
@@ -105,7 +110,7 @@ class TaskDetailPresenterTest {
         taskDetailCT = TaskDetailCT(
                 screen, taskDetailViews, COMPLETED_TASK.id).apply { onCreated() }
 
-        val tasksRepository = taskDetailCT.tasksRepository
+        `when`(taskDetailCT.tasksRepository).thenReturn(tasksRepository)
 
         // Then task is loaded from model, callback is captured and progress indicator is shown
         verify(tasksRepository).getTask(
@@ -139,7 +144,7 @@ class TaskDetailPresenterTest {
         taskDetailCT = TaskDetailCT(
                 screen, taskDetailViews, task.id).apply { deleteTask() }
 
-        val tasksRepository = taskDetailCT.tasksRepository
+        `when`(taskDetailCT.tasksRepository).thenReturn(tasksRepository)
 
         // Then the repository and the view are notified
         verify(tasksRepository).deleteTask(task.id)
@@ -150,12 +155,14 @@ class TaskDetailPresenterTest {
         // Given an initialized presenter with an active task
         val task = Task(TITLE_TEST, DESCRIPTION_TEST)
         taskDetailCT = TaskDetailCT(
-                screen, taskDetailViews, task.id).apply {
+                screen, taskDetailViews, task.id)
+
+        `when`(taskDetailCT.tasksRepository).thenReturn(tasksRepository)
+
+        taskDetailCT.apply {
             onCreated()
             completeTask()
         }
-
-        val tasksRepository = taskDetailCT.tasksRepository
 
         // Then a request is sent to the task repository and the UI is updated
         verify(tasksRepository).completeTask(task.id)
@@ -166,7 +173,11 @@ class TaskDetailPresenterTest {
         // Given an initialized presenter with a completed task
         val task = Task(TITLE_TEST, DESCRIPTION_TEST).apply { isCompleted = true }
         taskDetailCT = TaskDetailCT(
-                screen, taskDetailViews, task.id).apply {
+                screen, taskDetailViews, task.id)
+
+        `when`(taskDetailCT.tasksRepository).thenReturn(tasksRepository)
+
+        taskDetailCT.apply {
             onCreated()
             activateTask()
         }
