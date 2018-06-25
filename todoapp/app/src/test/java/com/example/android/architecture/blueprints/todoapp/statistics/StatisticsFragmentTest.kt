@@ -18,7 +18,9 @@ package com.example.android.architecture.blueprints.todoapp.statistics
 import com.example.android.architecture.blueprints.todoapp.capture
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
-import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
+import com.example.android.architecture.blueprints.todoapp.screen.statistics.StatisticsCT
+import com.example.android.architecture.blueprints.todoapp.screen.statistics.StatisticsFragment
+import com.example.android.architecture.blueprints.todoapp.screen.statistics.StatisticsViews
 import com.google.common.collect.Lists
 import org.junit.Before
 import org.junit.Test
@@ -30,19 +32,23 @@ import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 
 /**
- * Unit tests for the implementation of [StatisticsPresenter]
+ * Unit tests for the implementation of [StatisticsFragmentTest]
  */
-class StatisticsPresenterTest {
+class StatisticsFragmentTest {
 
-    @Mock private lateinit var tasksRepository: TasksRepository
-    @Mock private lateinit var statisticsView: StatisticsContract.View
+    @Mock
+    private lateinit var statisticsView: StatisticsViews
+    @Mock
+    private lateinit var screen: StatisticsFragment
+    @Mock
+    private lateinit var tasksRepository: TasksDataSource
     /**
      * [ArgumentCaptor] is a powerful Mockito API to capture argument values and use them to
      * perform further actions or assertions on them.
      */
     @Captor private lateinit var loadTasksCallbackCaptor:
             ArgumentCaptor<TasksDataSource.LoadTasksCallback>
-    private lateinit var statisticsPresenter: StatisticsPresenter
+    private lateinit var statisticsCT: StatisticsCT
     private lateinit var tasks: MutableList<Task>
 
     @Before fun setupStatisticsPresenter() {
@@ -51,10 +57,11 @@ class StatisticsPresenterTest {
         MockitoAnnotations.initMocks(this)
 
         // Get a reference to the class under test
-        statisticsPresenter = StatisticsPresenter(tasksRepository, statisticsView)
+        statisticsCT = StatisticsCT(screen, statisticsView, tasksRepository)
+        //`when`(statisticsCT.tasksRepository).thenReturn(tasksRepository)
 
         // The presenter won't update the view unless it's active.
-        `when`(statisticsView.isActive).thenReturn(true)
+        `when`(screen.isActive).thenReturn(true)
 
         // We start the tasks to 3, with one active and two completed
         tasks = Lists.newArrayList(Task("Title1", "Description1"),
@@ -62,20 +69,12 @@ class StatisticsPresenterTest {
                 Task("Title3", "Description3").apply { isCompleted = true })
     }
 
-    @Test fun createPresenter_setsThePresenterToView() {
-        // Get a reference to the class under test
-        statisticsPresenter = StatisticsPresenter(tasksRepository, statisticsView)
-
-        // Then the presenter is set to the view
-        verify(statisticsView).presenter = statisticsPresenter
-    }
-
     @Test fun loadEmptyTasksFromRepository_CallViewToDisplay() {
         // Given an initialized StatisticsPresenter with no tasks
         tasks.clear()
 
         // When loading of Tasks is requested
-        statisticsPresenter.start()
+        statisticsCT.onCreated()
 
         //Then progress indicator is shown
         verify(statisticsView).setProgressIndicator(true)
@@ -93,7 +92,7 @@ class StatisticsPresenterTest {
         // Given an initialized StatisticsPresenter with 1 active and 2 completed tasks
 
         // When loading of Tasks is requested
-        statisticsPresenter.start()
+        statisticsCT.onCreated()
 
         //Then progress indicator is shown
         verify(statisticsView).setProgressIndicator(true)
@@ -109,7 +108,7 @@ class StatisticsPresenterTest {
 
     @Test fun loadStatisticsWhenTasksAreUnavailable_CallErrorToDisplay() {
         // When statistics are loaded
-        statisticsPresenter.start()
+        statisticsCT.onCreated()
 
         // And tasks data isn't available
         verify(tasksRepository).getTasks(capture(loadTasksCallbackCaptor))

@@ -20,8 +20,10 @@ import com.example.android.architecture.blueprints.todoapp.any
 import com.example.android.architecture.blueprints.todoapp.capture
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
-import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import com.example.android.architecture.blueprints.todoapp.eq
+import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskActivity
+import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskCT
+import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskViews
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.assertThat
 import org.junit.Before
@@ -38,9 +40,12 @@ import org.mockito.MockitoAnnotations
  */
 class AddEditTaskPresenterTest {
 
-    @Mock private lateinit var tasksRepository: TasksRepository
-
-    @Mock private lateinit var addEditTaskView: AddEditTaskContract.View
+    @Mock
+    private lateinit var screen: AddEditTaskActivity
+    @Mock
+    private lateinit var tasksRepository: TasksDataSource
+    @Mock
+    private lateinit var addEditTaskViews: AddEditTaskViews
 
     /**
      * [ArgumentCaptor] is a powerful Mockito API to capture argument values and use them to
@@ -48,7 +53,7 @@ class AddEditTaskPresenterTest {
      */
     @Captor private lateinit var getTaskCallbackCaptor: ArgumentCaptor<TasksDataSource.GetTaskCallback>
 
-    private lateinit var addEditTaskPresenter: AddEditTaskPresenter
+    private lateinit var addEditTaskCT: AddEditTaskCT
 
     @Before fun setupMocksAndView() {
         // Mockito has a very convenient way to inject mocks by using the @Mock annotation. To
@@ -56,72 +61,70 @@ class AddEditTaskPresenterTest {
         MockitoAnnotations.initMocks(this)
 
         // The presenter wont't update the view unless it's active.
-        `when`(addEditTaskView.isActive).thenReturn(true)
+        `when`(addEditTaskViews.isActive).thenReturn(true)
     }
 
     @Test fun createPresenter_setsThePresenterToView() {
         // Get a reference to the class under test
-        addEditTaskPresenter = AddEditTaskPresenter(
-                null, tasksRepository, addEditTaskView, true)
+        addEditTaskCT = AddEditTaskCT(screen, addEditTaskViews, tasksRepository)
 
         // Then the presenter is set to the view
-        verify(addEditTaskView).presenter = addEditTaskPresenter
+        verify(addEditTaskViews).useCase = addEditTaskCT
     }
 
     @Test fun saveNewTaskToRepository_showsSuccessMessageUi() {
         // Get a reference to the class under test
-        addEditTaskPresenter = AddEditTaskPresenter(null, tasksRepository, addEditTaskView, true)
+        addEditTaskCT = AddEditTaskCT(screen, addEditTaskViews, tasksRepository)
 
         // When the presenter is asked to save a task
-        addEditTaskPresenter.saveTask("New Task Title", "Some Task Description")
+        addEditTaskCT.saveTask("New Task Title", "Some Task Description")
 
         // Then a task is saved in the repository and the view updated
         verify(tasksRepository).saveTask(any<Task>()) // saved to the model
-        verify(addEditTaskView).showTasksList() // shown in the UI
+        verify(screen).showTasksList() // shown in the UI
     }
 
     @Test fun saveTask_emptyTaskShowsErrorUi() {
         // Get a reference to the class under test
-        addEditTaskPresenter = AddEditTaskPresenter(null, tasksRepository, addEditTaskView, true)
+        addEditTaskCT = AddEditTaskCT(screen, addEditTaskViews, tasksRepository)
 
         // When the presenter is asked to save an empty task
-        addEditTaskPresenter.saveTask("", "")
+        addEditTaskCT.saveTask("", "")
 
         // Then an empty not error is shown in the UI
-        verify(addEditTaskView).showEmptyTaskError()
+        verify(addEditTaskViews).showEmptyTaskError()
     }
 
     @Test fun saveExistingTaskToRepository_showsSuccessMessageUi() {
         // Get a reference to the class under test
-        addEditTaskPresenter = AddEditTaskPresenter(
-                "1", tasksRepository, addEditTaskView, true)
+        addEditTaskCT = AddEditTaskCT(screen, addEditTaskViews, tasksRepository)
 
         // When the presenter is asked to save an existing task
-        addEditTaskPresenter.saveTask("Existing Task Title", "Some Task Description")
+        addEditTaskCT.saveTask("Existing Task Title", "Some Task Description")
 
         // Then a task is saved in the repository and the view updated
         verify(tasksRepository).saveTask(any<Task>()) // saved to the model
-        verify(addEditTaskView).showTasksList() // shown in the UI
+        verify(screen).showTasksList() // shown in the UI
     }
 
     @Test fun populateTask_callsRepoAndUpdatesView() {
         val testTask = Task("TITLE", "DESCRIPTION")
         // Get a reference to the class under test
-        addEditTaskPresenter = AddEditTaskPresenter(testTask.id,
-                tasksRepository, addEditTaskView, true).apply {
+        addEditTaskCT = AddEditTaskCT(screen, addEditTaskViews, tasksRepository).apply {
             // When the presenter is asked to populate an existing task
+            taskId = testTask.id
             populateTask()
         }
 
         // Then the task repository is queried and the view updated
         verify(tasksRepository).getTask(eq(testTask.id), capture(getTaskCallbackCaptor))
-        assertThat(addEditTaskPresenter.isDataMissing, `is`(true))
+        assertThat(addEditTaskCT.isDataMissing, `is`(true))
 
         // Simulate callback
         getTaskCallbackCaptor.value.onTaskLoaded(testTask)
 
-        verify(addEditTaskView).setTitle(testTask.title)
-        verify(addEditTaskView).setDescription(testTask.description)
-        assertThat(addEditTaskPresenter.isDataMissing, `is`(false))
+        verify(addEditTaskViews).setTitle(testTask.title)
+        verify(addEditTaskViews).setDescription(testTask.description)
+        assertThat(addEditTaskCT.isDataMissing, `is`(false))
     }
 }

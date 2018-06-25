@@ -10,7 +10,7 @@ import com.naver.android.svc.core.SvcCT
  */
 class TaskDetailCT(screen: TaskDetailActivity, views: TaskDetailViews, val taskId: String) : SvcCT<TaskDetailActivity, TaskDetailViews>(screen, views), TaskDetailUseCase {
 
-    private val tasksRepository: TasksDataSource by lazy { Injection.provideTasksRepository(activity!!.applicationContext) }
+    val tasksRepository: TasksDataSource by lazy { Injection.provideTasksRepository(activity!!.applicationContext) }
 
     override fun onCreated() {
         openTask()

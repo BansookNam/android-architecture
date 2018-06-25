@@ -16,7 +16,7 @@ class TasksCT(screen: TasksFragment, views: TasksViews) : SvcCT<TasksFragment, T
     var currentFiltering: TasksFilterType = TasksFilterType.ACTIVE_TASKS
     private var firstLoad = true
 
-    private val viewModel = ViewModelProviders.of(screen).get(TasksViewModel::class.java)
+    val viewModel = ViewModelProviders.of(screen).get(TasksViewModel::class.java)
 
     override fun onCreated() {
         viewModel.initRepository(activity!!.applicationContext)

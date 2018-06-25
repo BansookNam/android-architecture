@@ -2,6 +2,7 @@ package com.example.android.architecture.blueprints.todoapp.screen.addedittask
 
 import android.app.Activity
 import android.os.Bundle
+import com.example.android.architecture.blueprints.todoapp.Injection
 import com.naver.android.svc.core.screen.SvcActivity
 
 /**
@@ -9,7 +10,7 @@ import com.naver.android.svc.core.screen.SvcActivity
  */
 class AddEditTaskActivity : SvcActivity<AddEditTaskViews, AddEditTaskCT>() {
 
-    override fun createControlTower() = AddEditTaskCT(this, views)
+    override fun createControlTower() = AddEditTaskCT(this, views, Injection.provideTasksRepository(applicationContext))
     override fun createViews() = AddEditTaskViews(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {

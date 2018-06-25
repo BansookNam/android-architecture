@@ -21,6 +21,10 @@ import com.example.android.architecture.blueprints.todoapp.capture
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource.LoadTasksCallback
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
+import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksCT
+import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksFilterType
+import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksFragment
+import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksViews
 import com.google.common.collect.Lists
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -28,9 +32,7 @@ import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.inOrder
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 
 /**
@@ -40,7 +42,10 @@ class TasksPresenterTest {
 
     @Mock private lateinit var tasksRepository: TasksRepository
 
-    @Mock private lateinit var tasksView: TasksContract.View
+    @Mock
+    private lateinit var tasksViews: TasksViews
+    @Mock
+    private lateinit var screen: TasksFragment
 
     /**
      * [ArgumentCaptor] is a powerful Mockito API to capture argument values and use them to
@@ -48,7 +53,7 @@ class TasksPresenterTest {
      */
     @Captor private lateinit var loadTasksCallbackCaptor: ArgumentCaptor<LoadTasksCallback>
 
-    private lateinit var tasksPresenter: TasksPresenter
+    private lateinit var tasksCT: TasksCT
 
     private lateinit var tasks: MutableList<Task>
 
@@ -58,10 +63,11 @@ class TasksPresenterTest {
         MockitoAnnotations.initMocks(this)
 
         // Get a reference to the class under test
-        tasksPresenter = TasksPresenter(tasksRepository, tasksView)
+        tasksCT = TasksCT(screen, tasksViews)
+        tasksRepository = tasksCT.viewModel.tasksRepository
 
         // The presenter won't update the view unless it's active.
-        `when`(tasksView.isActive).thenReturn(true)
+        `when`(tasksViews.isInitialized).thenReturn(true)
 
         // We start the tasks to 3, with one active and two completed
         tasks = Lists.newArrayList(Task("Title1", "Description1"),
@@ -71,14 +77,14 @@ class TasksPresenterTest {
 
     @Test fun createPresenter_setsThePresenterToView() {
         // Get a reference to the class under test
-        tasksPresenter = TasksPresenter(tasksRepository, tasksView)
+        tasksCT = TasksCT(screen, tasksViews)
 
         // Then the presenter is set to the view
-        verify(tasksView).presenter = tasksPresenter
+        verify(tasksViews).useCase = tasksCT
     }
 
     @Test fun loadAllTasksFromRepositoryAndLoadIntoView() {
-        with(tasksPresenter) {
+        with(tasksCT) {
             // Given an initialized TasksPresenter with initialized tasks
             // When loading of Tasks is requested
             currentFiltering = TasksFilterType.ALL_TASKS
@@ -90,17 +96,17 @@ class TasksPresenterTest {
         loadTasksCallbackCaptor.value.onTasksLoaded(tasks)
 
         // Then progress indicator is shown
-        val inOrder = inOrder(tasksView)
-        inOrder.verify(tasksView).setLoadingIndicator(true)
+        val inOrder = inOrder(tasksViews)
+        inOrder.verify(tasksViews).setLoadingIndicator(true)
         // Then progress indicator is hidden and all tasks are shown in UI
-        inOrder.verify(tasksView).setLoadingIndicator(false)
+        inOrder.verify(tasksViews).setLoadingIndicator(false)
         val showTasksArgumentCaptor = argumentCaptor<List<Task>>()
-        verify(tasksView).showTasks(capture(showTasksArgumentCaptor))
+        verify(tasksViews).showTasks(capture(showTasksArgumentCaptor))
         assertTrue(showTasksArgumentCaptor.value.size == 3)
     }
 
     @Test fun loadActiveTasksFromRepositoryAndLoadIntoView() {
-        with(tasksPresenter) {
+        with(tasksCT) {
             // Given an initialized TasksPresenter with initialized tasks
             // When loading of Tasks is requested
             currentFiltering = TasksFilterType.ACTIVE_TASKS
@@ -112,14 +118,14 @@ class TasksPresenterTest {
         loadTasksCallbackCaptor.value.onTasksLoaded(tasks)
 
         // Then progress indicator is hidden and active tasks are shown in UI
-        verify(tasksView).setLoadingIndicator(false)
+        verify(tasksViews).setLoadingIndicator(false)
         val showTasksArgumentCaptor = argumentCaptor<List<Task>>()
-        verify(tasksView).showTasks(capture(showTasksArgumentCaptor))
+        verify(tasksViews).showTasks(capture(showTasksArgumentCaptor))
         assertTrue(showTasksArgumentCaptor.value.size == 1)
     }
 
     @Test fun loadCompletedTasksFromRepositoryAndLoadIntoView() {
-        with(tasksPresenter) {
+        with(tasksCT) {
             // Given an initialized TasksPresenter with initialized tasks
             // When loading of Tasks is requested
             currentFiltering = TasksFilterType.COMPLETED_TASKS
@@ -131,18 +137,18 @@ class TasksPresenterTest {
         loadTasksCallbackCaptor.value.onTasksLoaded(tasks)
 
         // Then progress indicator is hidden and completed tasks are shown in UI
-        verify(tasksView).setLoadingIndicator(false)
+        verify(tasksViews).setLoadingIndicator(false)
         val showTasksArgumentCaptor = argumentCaptor<List<Task>>()
-        verify(tasksView).showTasks(capture(showTasksArgumentCaptor))
+        verify(tasksViews).showTasks(capture(showTasksArgumentCaptor))
         assertTrue(showTasksArgumentCaptor.value.size == 2)
     }
 
     @Test fun clickOnFab_ShowsAddTaskUi() {
         // When adding a new task
-        tasksPresenter.addNewTask()
+        tasksCT.onClickTaskAdd()
 
         // Then add task UI is shown
-        verify(tasksView).showAddTask()
+        verify(screen).startEditTaskActivity()
     }
 
     @Test fun clickOnTask_ShowsDetailUi() {
@@ -150,10 +156,10 @@ class TasksPresenterTest {
         val requestedTask = Task("Details Requested", "For this task")
 
         // When open task details is requested
-        tasksPresenter.openTaskDetails(requestedTask)
+        tasksCT.openTaskDetails(requestedTask)
 
         // Then task detail UI is shown
-        verify(tasksView).showTaskDetailsUi(any<String>())
+        verify(screen).startTaskDetailActivity(any<String>())
     }
 
     @Test fun completeTask_ShowsTaskMarkedComplete() {
@@ -161,17 +167,17 @@ class TasksPresenterTest {
         val task = Task("Details Requested", "For this task")
 
         // When task is marked as complete
-        tasksPresenter.completeTask(task)
+        tasksCT.completeTask(task)
 
         // Then repository is called and task marked complete UI is shown
         verify(tasksRepository).completeTask(task)
-        verify(tasksView).showTaskMarkedComplete()
+        verify(tasksViews).showTaskMarkedComplete()
     }
 
     @Test fun activateTask_ShowsTaskMarkedActive() {
         // Given a stubbed completed task
         val task = Task("Details Requested", "For this task").apply { isCompleted = true }
-        with(tasksPresenter) {
+        with(tasksCT) {
             loadTasks(true)
 
             // When task is marked as activated
@@ -180,11 +186,11 @@ class TasksPresenterTest {
 
         // Then repository is called and task marked active UI is shown
         verify(tasksRepository).activateTask(task)
-        verify(tasksView).showTaskMarkedActive()
+        verify(tasksViews).showTaskMarkedActive()
     }
 
     @Test fun unavailableTasks_ShowsError() {
-        with(tasksPresenter) {
+        with(tasksCT) {
             // When tasks are loaded
             currentFiltering = TasksFilterType.ALL_TASKS
             loadTasks(true)
@@ -194,6 +200,6 @@ class TasksPresenterTest {
         loadTasksCallbackCaptor.value.onDataNotAvailable()
 
         // Then an error message is shown
-        verify(tasksView).showLoadingTasksError()
+        verify(tasksViews).showLoadingTasksError()
     }
 }

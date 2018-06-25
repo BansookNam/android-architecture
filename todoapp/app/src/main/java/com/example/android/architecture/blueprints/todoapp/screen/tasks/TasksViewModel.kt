@@ -11,7 +11,7 @@ import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingRe
 import java.util.*
 
 class TasksViewModel : ViewModel() {
-    private lateinit var tasksRepository: TasksRepository
+    lateinit var tasksRepository: TasksRepository
 
     val tasks = MutableLiveData<MutableList<Task>>()
 
