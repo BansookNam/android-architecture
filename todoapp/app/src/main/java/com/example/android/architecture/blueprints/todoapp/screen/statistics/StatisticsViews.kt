@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.fragment_statistics.*
 /**
  * @author bs.nam@navercorp.com
  */
-class StatisticsViews(screen: StatisticsFragment) : SvcViews<StatisticsFragment>(screen) {
+class StatisticsViews(screen: StatisticsFragment) : SvcViews(screen) {
 
     private val statisticsTV by lazy { screen.statistics }
 

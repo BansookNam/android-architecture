@@ -9,6 +9,7 @@ import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksFra
 import com.example.android.architecture.blueprints.todoapp.util.clearAllFragments
 import com.example.android.architecture.blueprints.todoapp.util.replaceFragmentInActivity
 import com.example.android.architecture.blueprints.todoapp.util.replaceRootFragmentInActivity
+import com.example.android.architecture.blueprints.todoapp.util.setupActionBar
 import com.naver.android.svc.core.screen.SvcActivity
 
 /**
@@ -29,11 +30,16 @@ class MainActivity : SvcActivity<MainViews, MainCT>() {
             replaceRootFragmentInActivity(it, R.id.contentFrame)
         }
 
-        views.setTitle(R.string.list_title)
+        setActionbarTitle(R.string.list_title)
 
         supportFragmentManager.addOnBackStackChangedListener {
             val currentFragment = contentFragment
-            views.setTitle(currentFragment.fragmentTitleResId)
+            setActionbarTitle(currentFragment.fragmentTitleResId)
+        }
+
+        setupActionBar(R.id.toolbar) {
+            setHomeAsUpIndicator(R.drawable.ic_menu)
+            setDisplayHomeAsUpEnabled(true)
         }
     }
 
@@ -60,7 +66,7 @@ class MainActivity : SvcActivity<MainViews, MainCT>() {
         if (currentFragment !is StatisticsFragment) {
             views.hideFab()
             val newFragment = StatisticsFragment()
-            views.setTitle(newFragment.fragmentTitleResId)
+            setActionbarTitle(newFragment.fragmentTitleResId)
             replaceFragmentInActivity(newFragment, R.id.contentFrame)
         }
     }
@@ -69,8 +75,12 @@ class MainActivity : SvcActivity<MainViews, MainCT>() {
         val currentFragment = contentFragment
         if (currentFragment !is TasksFragment) {
             views.showFab()
-            views.setTitle(R.string.list_title)
+            setActionbarTitle(R.string.list_title)
             clearAllFragments()
         }
+    }
+
+    private fun setActionbarTitle(title: Int) {
+        supportActionBar?.setTitle(title)
     }
 }

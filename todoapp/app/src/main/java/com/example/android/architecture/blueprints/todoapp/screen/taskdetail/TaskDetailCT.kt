@@ -1,16 +1,14 @@
 package com.example.android.architecture.blueprints.todoapp.screen.taskdetail
 
-import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
-import com.naver.android.svc.core.SvcCT
+import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
+import com.naver.android.svc.core.controltower.SvcCT
 
 /**
  * @author bs.nam@navercorp.com
  */
-class TaskDetailCT(screen: TaskDetailActivity, views: TaskDetailViews, val taskId: String) : SvcCT<TaskDetailActivity, TaskDetailViews>(screen, views), TaskDetailUseCase {
-
-    val tasksRepository: TasksDataSource by lazy { Injection.provideTasksRepository(activity!!.applicationContext) }
+class TaskDetailCT(screen: TaskDetailActivity, views: TaskDetailViews, val taskId: String, val tasksRepository: TasksRepository) : SvcCT<TaskDetailActivity, TaskDetailViews>(screen, views), TaskDetailUseCase {
 
     override fun onCreated() {
         openTask()

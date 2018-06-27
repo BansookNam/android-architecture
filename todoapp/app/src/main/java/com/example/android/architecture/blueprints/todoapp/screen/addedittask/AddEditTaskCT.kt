@@ -2,7 +2,7 @@ package com.example.android.architecture.blueprints.todoapp.screen.addedittask
 
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
-import com.naver.android.svc.core.SvcCT
+import com.naver.android.svc.core.controltower.SvcCT
 
 /**
  * @author bs.nam@navercorp.com

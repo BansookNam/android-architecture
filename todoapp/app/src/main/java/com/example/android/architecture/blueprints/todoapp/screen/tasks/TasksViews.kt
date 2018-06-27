@@ -6,23 +6,23 @@ import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.util.showSnackBar
 import com.naver.android.svc.core.views.UseCaseViews
-import kotlinx.android.synthetic.main.fragment_tasks.*
+import kotlinx.android.synthetic.main.fragment_tasks.view.*
 import java.util.*
 
 /**
  * @author bs.nam@navercorp.com
  */
-class TasksViews(screen: TasksFragment) : UseCaseViews<TasksFragment, TasksUseCase>(screen) {
+class TasksViews(screen: TasksFragment) : UseCaseViews<TasksUseCase>(screen) {
 
     override val layoutResId: Int
         get() = R.layout.fragment_tasks
 
-    val noTasksView by lazy { screen.noTasks }
-    val noTaskIcon by lazy { screen.noTasksIcon }
-    val noTaskMainView by lazy { screen.noTasksMain }
-    val noTaskAddView by lazy { screen.noTasksAdd }
-    val tasksView by lazy { screen.tasksLL }
-    val filteringLabelView by lazy { screen.filteringLabel }
+    val noTasksView by lazy { rootView.noTasks }
+    val noTaskIcon by lazy { rootView.noTasksIcon }
+    val noTaskMainView by lazy { rootView.noTasksMain }
+    val noTaskAddView by lazy { rootView.noTasksAdd }
+    val tasksView by lazy { rootView.tasksLL }
+    val filteringLabelView by lazy { rootView.filteringLabel }
 
     /**
      * should initialize "onCreated" because useCase instance setted when "onCreated"
@@ -33,12 +33,12 @@ class TasksViews(screen: TasksFragment) : UseCaseViews<TasksFragment, TasksUseCa
 
     override fun onCreated() {
 
-        val listView = screen.tasks_list.apply {
+        val listView = rootView.tasks_list.apply {
             adapter = listAdapter
         }
 
         // Set up progress indicator
-        screen.refresh_layout.apply {
+        rootView.refresh_layout.apply {
             setColorSchemeColors(
                     getColor(R.color.colorPrimary),
                     getColor(R.color.colorAccent),
@@ -59,7 +59,7 @@ class TasksViews(screen: TasksFragment) : UseCaseViews<TasksFragment, TasksUseCa
             return
         }
 
-        with(screen.refresh_layout) {
+        with(rootView.refresh_layout) {
             // Make sure setRefreshing() is called after the layout is done with everything else.
             post { isRefreshing = active }
         }
@@ -125,7 +125,7 @@ class TasksViews(screen: TasksFragment) : UseCaseViews<TasksFragment, TasksUseCa
     }
 
     private fun showMessage(message: String) {
-        rootView?.showSnackBar(message, Snackbar.LENGTH_LONG)
+        rootView.showSnackBar(message, Snackbar.LENGTH_LONG)
     }
 
 }

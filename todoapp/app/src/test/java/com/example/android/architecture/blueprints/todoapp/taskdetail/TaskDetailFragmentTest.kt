@@ -47,10 +47,9 @@ class TaskDetailFragmentTest {
     private val COMPLETED_TASK = Task(TITLE_TEST, DESCRIPTION_TEST).apply { isCompleted = true }
 
     @Mock
-    private lateinit var taskDetailViews: TaskDetailViews
+    private lateinit var views: TaskDetailViews
     @Mock
     private lateinit var screen: TaskDetailActivity
-
     @Mock
     private lateinit var tasksRepository: TasksRepository
 
@@ -69,71 +68,60 @@ class TaskDetailFragmentTest {
         MockitoAnnotations.initMocks(this)
 
         // The presenter won't update the view unless it's active.
-        `when`(taskDetailViews.isInitialized).thenReturn(true)
-    }
-
-    @Test fun createPresenter_setsThePresenterToView() {
-        // Get a reference to the class under test
-        taskDetailCT = TaskDetailCT(screen, taskDetailViews, ACTIVE_TASK.id)
-
-        // Then the presenter is set to the view
-        verify(taskDetailViews).useCase = taskDetailCT
+        `when`(screen.isActive).thenReturn(true)
+        `when`(views.isInitialized).thenReturn(true)
+        `when`(views.screen).thenReturn(screen)
     }
 
     @Test fun getActiveTaskFromRepositoryAndLoadIntoView() {
         // When tasks presenter is asked to open a task
-        taskDetailCT = TaskDetailCT(
-                screen, taskDetailViews, ACTIVE_TASK.id).apply {
-            onCreated()
-        }
-
-        `when`(taskDetailCT.tasksRepository).thenReturn(tasksRepository)
-
+        taskDetailCT = TaskDetailCT(screen, views, ACTIVE_TASK.id, tasksRepository)
+                .apply {
+                    onCreated()
+                }
         // Then task is loaded from model, callback is captured and progress indicator is shown
         verify(tasksRepository).getTask(eq(ACTIVE_TASK.id),
                 capture(getTaskCallbackCaptor))
-        val inOrder = inOrder(taskDetailViews)
-        inOrder.verify(taskDetailViews).setLoadingIndicator(true)
+        val inOrder = inOrder(views)
+        inOrder.verify(views).setLoadingIndicator(true)
 
         // When task is finally loaded
         getTaskCallbackCaptor.value.onTaskLoaded(ACTIVE_TASK) // Trigger callback
 
         // Then progress indicator is hidden and title, description and completion status are shown
         // in UI
-        inOrder.verify(taskDetailViews).setLoadingIndicator(false)
-        verify(taskDetailViews).showTitle(TITLE_TEST)
-        verify(taskDetailViews).showDescription(DESCRIPTION_TEST)
-        verify(taskDetailViews).showCompletionStatus(false)
+        inOrder.verify(views).setLoadingIndicator(false)
+        verify(views).showTitle(TITLE_TEST)
+        verify(views).showDescription(DESCRIPTION_TEST)
+        verify(views).showCompletionStatus(false)
     }
 
     @Test fun getCompletedTaskFromRepositoryAndLoadIntoView() {
-        taskDetailCT = TaskDetailCT(
-                screen, taskDetailViews, COMPLETED_TASK.id).apply { onCreated() }
-
-        `when`(taskDetailCT.tasksRepository).thenReturn(tasksRepository)
+        taskDetailCT = TaskDetailCT(screen, views, COMPLETED_TASK.id, tasksRepository)
+                .apply { onCreated() }
 
         // Then task is loaded from model, callback is captured and progress indicator is shown
         verify(tasksRepository).getTask(
                 eq(COMPLETED_TASK.id), capture(getTaskCallbackCaptor))
-        val inOrder = inOrder(taskDetailViews)
-        inOrder.verify(taskDetailViews).setLoadingIndicator(true)
+        val inOrder = inOrder(views)
+        inOrder.verify(views).setLoadingIndicator(true)
 
         // When task is finally loaded
         getTaskCallbackCaptor.value.onTaskLoaded(COMPLETED_TASK) // Trigger callback
 
         // Then progress indicator is hidden and title, description and completion status are shown
         // in UI
-        inOrder.verify(taskDetailViews).setLoadingIndicator(false)
-        verify(taskDetailViews).showTitle(TITLE_TEST)
-        verify(taskDetailViews).showDescription(DESCRIPTION_TEST)
-        verify(taskDetailViews).showCompletionStatus(true)
+        inOrder.verify(views).setLoadingIndicator(false)
+        verify(views).showTitle(TITLE_TEST)
+        verify(views).showDescription(DESCRIPTION_TEST)
+        verify(views).showCompletionStatus(true)
     }
 
     @Test fun getUnknownTaskFromRepositoryAndLoadIntoView() {
         // When loading of a task is requested with an invalid task ID.
-        taskDetailCT = TaskDetailCT(
-                screen, taskDetailViews, INVALID_TASK_ID).apply { onCreated() }
-        verify(taskDetailViews).showMissingTask()
+        taskDetailCT = TaskDetailCT(screen, views, INVALID_TASK_ID, tasksRepository)
+                .apply { onCreated() }
+        verify(views).showMissingTask()
     }
 
     @Test fun deleteTask() {
@@ -141,10 +129,8 @@ class TaskDetailFragmentTest {
         val task = Task(TITLE_TEST, DESCRIPTION_TEST)
 
         // When the deletion of a task is requested
-        taskDetailCT = TaskDetailCT(
-                screen, taskDetailViews, task.id).apply { deleteTask() }
-
-        `when`(taskDetailCT.tasksRepository).thenReturn(tasksRepository)
+        taskDetailCT = TaskDetailCT(screen, views, task.id, tasksRepository)
+                .apply { deleteTask() }
 
         // Then the repository and the view are notified
         verify(tasksRepository).deleteTask(task.id)
@@ -154,10 +140,7 @@ class TaskDetailFragmentTest {
     @Test fun completeTask() {
         // Given an initialized presenter with an active task
         val task = Task(TITLE_TEST, DESCRIPTION_TEST)
-        taskDetailCT = TaskDetailCT(
-                screen, taskDetailViews, task.id)
-
-        `when`(taskDetailCT.tasksRepository).thenReturn(tasksRepository)
+        taskDetailCT = TaskDetailCT(screen, views, task.id, tasksRepository)
 
         taskDetailCT.apply {
             onCreated()
@@ -166,33 +149,29 @@ class TaskDetailFragmentTest {
 
         // Then a request is sent to the task repository and the UI is updated
         verify(tasksRepository).completeTask(task.id)
-        verify(taskDetailViews).showTaskMarkedComplete()
+        verify(views).showTaskMarkedComplete()
     }
 
     @Test fun activateTask() {
         // Given an initialized presenter with a completed task
         val task = Task(TITLE_TEST, DESCRIPTION_TEST).apply { isCompleted = true }
-        taskDetailCT = TaskDetailCT(
-                screen, taskDetailViews, task.id)
-
-        `when`(taskDetailCT.tasksRepository).thenReturn(tasksRepository)
-
-        taskDetailCT.apply {
-            onCreated()
-            activateTask()
-        }
+        taskDetailCT = TaskDetailCT(screen, views, task.id, tasksRepository)
+                .apply {
+                    onCreated()
+                    activateTask()
+                }
 
         val tasksRepository = taskDetailCT.tasksRepository
 
         // Then a request is sent to the task repository and the UI is updated
         verify(tasksRepository).activateTask(task.id)
-        verify(taskDetailViews).showTaskMarkedActive()
+        verify(views).showTaskMarkedActive()
     }
 
     @Test fun activeTaskIsShownWhenEditing() {
         // When the edit of an ACTIVE_TASK is requested
         taskDetailCT = TaskDetailCT(
-                screen, taskDetailViews, ACTIVE_TASK.id).apply { editTask() }
+                screen, views, ACTIVE_TASK.id, tasksRepository).apply { editTask() }
 
         // Then the view is notified
         verify(screen).startEditTastActivity(ACTIVE_TASK.id)
@@ -201,11 +180,11 @@ class TaskDetailFragmentTest {
     @Test fun invalidTaskIsNotShownWhenEditing() {
         // When the edit of an invalid task id is requested
         taskDetailCT = TaskDetailCT(
-                screen, taskDetailViews, INVALID_TASK_ID).apply { editTask() }
+                screen, views, INVALID_TASK_ID, tasksRepository).apply { editTask() }
 
         // Then the edit mode is never started
         verify(screen, never()).startEditTastActivity(INVALID_TASK_ID)
         // instead, the error is shown.
-        verify(taskDetailViews).showMissingTask()
+        verify(views).showMissingTask()
     }
 }

@@ -3,15 +3,15 @@ package com.example.android.architecture.blueprints.todoapp.screen.taskdetail
 import android.support.design.widget.Snackbar
 import android.view.View
 import com.example.android.architecture.blueprints.todoapp.R
-import com.example.android.architecture.blueprints.todoapp.util.setupActionBar
 import com.example.android.architecture.blueprints.todoapp.util.showSnackBar
 import com.naver.android.svc.core.views.UseCaseViews
 import kotlinx.android.synthetic.main.activity_task_detail.*
+import kotlinx.android.synthetic.main.activity_task_detail.view.*
 
 /**
  * @author bs.nam@navercorp.com
  */
-class TaskDetailViews(screen: TaskDetailActivity) : UseCaseViews<TaskDetailActivity, TaskDetailUseCase>(screen) {
+class TaskDetailViews(screen: TaskDetailActivity) : UseCaseViews<TaskDetailUseCase>(screen) {
 
     private val detailTitle by lazy { screen.task_detail_title }
     private val detailDescription by lazy { screen.task_detail_description }
@@ -22,16 +22,8 @@ class TaskDetailViews(screen: TaskDetailActivity) : UseCaseViews<TaskDetailActiv
         get() = R.layout.activity_task_detail
 
     override fun onCreated() {
-
-        // Set up the toolbar.
-        screen.setupActionBar(R.id.toolbar) {
-            setDisplayHomeAsUpEnabled(true)
-            setDisplayShowHomeEnabled(true)
-        }
-
         // Set up floating action button
-        screen.fab_edit_task.setOnClickListener { useCase.onClickFabEditTask() }
-
+        rootView.fab_edit_task.setOnClickListener { useCase.onClickFabEditTask() }
     }
 
 

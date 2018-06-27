@@ -1,7 +1,7 @@
 package com.example.android.architecture.blueprints.todoapp.screen
 
 import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksFragment
-import com.naver.android.svc.core.SvcCT
+import com.naver.android.svc.core.controltower.SvcCT
 
 /**
  * @author bs.nam@navercorp.com

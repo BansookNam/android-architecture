@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskActivity
+import com.example.android.architecture.blueprints.todoapp.util.setupActionBar
 import com.naver.android.svc.core.screen.SvcActivity
 
 /**
@@ -14,7 +16,7 @@ import com.naver.android.svc.core.screen.SvcActivity
  */
 class TaskDetailActivity : SvcActivity<TaskDetailViews, TaskDetailCT>() {
 
-    override fun createControlTower() = TaskDetailCT(this, views, taskId!!)
+    override fun createControlTower() = TaskDetailCT(this, views, taskId!!, Injection.provideTasksRepository(applicationContext))
     override fun createViews() = TaskDetailViews(this)
 
     var taskId: String? = null
@@ -28,6 +30,12 @@ class TaskDetailActivity : SvcActivity<TaskDetailViews, TaskDetailCT>() {
         taskId = intent.getStringExtra(EXTRA_TASK_ID)
 
         super.onCreate(savedInstanceState)
+
+        // Set up the toolbar.
+        setupActionBar(R.id.toolbar) {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
