@@ -12,7 +12,7 @@ import java.util.*
 /**
  * @author bs.nam@navercorp.com
  */
-class TasksViews(screen: TasksFragment) : UseCaseViews<TasksUseCase>(screen) {
+class TasksViews : UseCaseViews<TasksUseCase>() {
 
     override val layoutResId: Int
         get() = R.layout.fragment_tasks

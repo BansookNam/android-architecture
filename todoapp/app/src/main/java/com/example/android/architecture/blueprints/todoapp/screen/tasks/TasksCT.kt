@@ -2,26 +2,24 @@ package com.example.android.architecture.blueprints.todoapp.screen.tasks
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
+import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
 import com.naver.android.svc.core.controltower.SvcCT
 
 /**
  * @author bs.nam@navercorp.com
  */
-class TasksCT(screen: TasksFragment, views: TasksViews) : SvcCT<TasksFragment, TasksViews>(screen, views), TasksUseCase {
+class TasksCT(screen: TasksFragment, views: TasksViews, val vm: TasksViewModel, val tasksRepository: TasksRepository) : SvcCT<TasksFragment, TasksViews>(screen, views), TasksUseCase {
 
     var currentFiltering: TasksFilterType = TasksFilterType.ACTIVE_TASKS
     private var firstLoad = true
 
-    val viewModel = ViewModelProviders.of(screen).get(TasksViewModel::class.java)
-
     override fun onCreated() {
-        viewModel.initRepository(activity!!.applicationContext)
+        vm.tasksRepository = tasksRepository
         loadTasks(true)
-        viewModel.tasks.observe(screen, Observer<MutableList<Task>> { task ->
+        vm.tasks.observe(screen, Observer<MutableList<Task>> { task ->
             task ?: return@Observer
             views.setLoadingIndicator(false)
             processTasks(task)
@@ -78,14 +76,14 @@ class TasksCT(screen: TasksFragment, views: TasksViews) : SvcCT<TasksFragment, T
             views.setLoadingIndicator(true)
         }
         if (forceUpdate) {
-            viewModel.refreshTasks()
+            vm.refreshTasks()
         }
 
         // The network request might be handled in a different thread so make sure Espresso knows
         // that the app is busy until the response is handled.
         EspressoIdlingResource.increment() // App is busy until further notice
 
-        viewModel.getTasks(currentFiltering, object :TasksDataSource.LoadTasksCallback{
+        vm.getTasks(currentFiltering, object : TasksDataSource.LoadTasksCallback {
             override fun onTasksLoaded(tasks: List<Task>) {
             }
 
@@ -133,19 +131,19 @@ class TasksCT(screen: TasksFragment, views: TasksViews) : SvcCT<TasksFragment, T
     }
 
     fun completeTask(completedTask: Task) {
-        viewModel.completeTask(completedTask)
+        vm.completeTask(completedTask)
         views.showTaskMarkedComplete()
         loadTasks(false, false)
     }
 
     fun activateTask(activeTask: Task) {
-        viewModel.activateTask(activeTask)
+        vm.activateTask(activeTask)
         views.showTaskMarkedActive()
         loadTasks(false, false)
     }
 
     fun clearCompletedTasks() {
-        viewModel.clearCompletedTasks()
+        vm.clearCompletedTasks()
         views.showCompletedTasksCleared()
         loadTasks(false, false)
     }

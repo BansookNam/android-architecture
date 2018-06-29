@@ -17,7 +17,7 @@ import com.naver.android.svc.core.screen.SvcActivity
 class TaskDetailActivity : SvcActivity<TaskDetailViews, TaskDetailCT>() {
 
     override fun createControlTower() = TaskDetailCT(this, views, taskId!!, Injection.provideTasksRepository(applicationContext))
-    override fun createViews() = TaskDetailViews(this)
+    override fun createViews() = TaskDetailViews()
 
     var taskId: String? = null
 

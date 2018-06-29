@@ -1,11 +1,13 @@
 package com.example.android.architecture.blueprints.todoapp.screen.tasks
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.PopupMenu
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskActivity
 import com.example.android.architecture.blueprints.todoapp.screen.base.BaseFragment
@@ -21,8 +23,10 @@ class TasksFragment : BaseFragment<TasksViews, TasksCT>() {
 
     private val CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY"
 
-    override fun createControlTower() = TasksCT(this, views)
-    override fun createViews() = TasksViews(this)
+    val vm by lazy { ViewModelProviders.of(this).get(TasksViewModel::class.java) }
+
+    override fun createControlTower() = TasksCT(this, views, vm, Injection.provideTasksRepository(activity!!.applicationContext))
+    override fun createViews() = TasksViews()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -15,37 +15,52 @@
  */
 package com.example.android.architecture.blueprints.todoapp.tasks
 
+import android.arch.core.executor.testing.InstantTaskExecutorRule
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleRegistry
+import android.content.Context
+import android.support.v4.app.FragmentActivity
 import com.example.android.architecture.blueprints.todoapp.any
 import com.example.android.architecture.blueprints.todoapp.argumentCaptor
 import com.example.android.architecture.blueprints.todoapp.capture
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource.LoadTasksCallback
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
-import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksCT
-import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksFilterType
-import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksFragment
-import com.example.android.architecture.blueprints.todoapp.screen.tasks.TasksViews
+import com.example.android.architecture.blueprints.todoapp.screen.tasks.*
 import com.google.common.collect.Lists
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestRule
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 
+
 /**
  * Unit tests for the implementation of [TasksPresenter]
  */
-class TasksPresenterTest {
+class TasksFragmentTest {
 
-    @Mock private lateinit var tasksRepository: TasksRepository
+    @get:Rule
+    var rule: TestRule = InstantTaskExecutorRule()
 
+    @Mock
+    private lateinit var tasksRepository: TasksRepository
     @Mock
     private lateinit var tasksViews: TasksViews
     @Mock
     private lateinit var screen: TasksFragment
+
+    private lateinit var lifeCycle: LifecycleRegistry
+    @Mock
+    private var activity: FragmentActivity? = null
+    @Mock
+    private lateinit var applicationContext: Context
+    private val tasksViewModel: TasksViewModel = TasksViewModel()
 
     /**
      * [ArgumentCaptor] is a powerful Mockito API to capture argument values and use them to
@@ -62,12 +77,21 @@ class TasksPresenterTest {
         // inject the mocks in the test the initMocks method needs to be called.
         MockitoAnnotations.initMocks(this)
 
-        // Get a reference to the class under test
-        tasksCT = TasksCT(screen, tasksViews)
-        tasksRepository = tasksCT.viewModel.tasksRepository
+        lifeCycle = LifecycleRegistry(screen)
 
-        // The presenter won't update the view unless it's active.
         `when`(tasksViews.isInitialized).thenReturn(true)
+        `when`(tasksViews.isDestroyed).thenReturn(false)
+        // The views won't update the view unless screen is active.
+        `when`(screen.isActive).thenReturn(true)
+        `when`(screen.hostActivity).thenReturn(activity)
+        `when`(screen.hostActivity!!.applicationContext).thenReturn(applicationContext)
+        `when`(screen.lifecycle).thenReturn(lifeCycle)
+
+        // Get a reference to the class under test
+        tasksCT = TasksCT(screen, tasksViews, tasksViewModel, tasksRepository)
+        tasksViewModel.tasksRepository = tasksRepository
+        lifeCycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
+
 
         // We start the tasks to 3, with one active and two completed
         tasks = Lists.newArrayList(Task("Title1", "Description1"),
@@ -75,31 +99,28 @@ class TasksPresenterTest {
                 Task("Title3", "Description3").apply { isCompleted = true })
     }
 
-    @Test fun createPresenter_setsThePresenterToView() {
-        // Get a reference to the class under test
-        tasksCT = TasksCT(screen, tasksViews)
-
-        // Then the presenter is set to the view
-        verify(tasksViews).useCase = tasksCT
-    }
-
     @Test fun loadAllTasksFromRepositoryAndLoadIntoView() {
         with(tasksCT) {
             // Given an initialized TasksPresenter with initialized tasks
             // When loading of Tasks is requested
+            //`when`(lifeCycle.currentState).thenReturn(Lifecycle.State.STARTED)
             currentFiltering = TasksFilterType.ALL_TASKS
-            loadTasks(true)
+            onCreated() // regist and loadTasks observer on ViewModel
         }
+
+        val inOrder = inOrder(tasksViews)
 
         // Callback is captured and invoked with stubbed tasks
         verify(tasksRepository).getTasks(capture(loadTasksCallbackCaptor))
-        loadTasksCallbackCaptor.value.onTasksLoaded(tasks)
 
         // Then progress indicator is shown
-        val inOrder = inOrder(tasksViews)
         inOrder.verify(tasksViews).setLoadingIndicator(true)
+
+        loadTasksCallbackCaptor.value.onTasksLoaded(tasks)
+
         // Then progress indicator is hidden and all tasks are shown in UI
         inOrder.verify(tasksViews).setLoadingIndicator(false)
+
         val showTasksArgumentCaptor = argumentCaptor<List<Task>>()
         verify(tasksViews).showTasks(capture(showTasksArgumentCaptor))
         assertTrue(showTasksArgumentCaptor.value.size == 3)
@@ -110,7 +131,7 @@ class TasksPresenterTest {
             // Given an initialized TasksPresenter with initialized tasks
             // When loading of Tasks is requested
             currentFiltering = TasksFilterType.ACTIVE_TASKS
-            loadTasks(true)
+            onCreated()
         }
 
         // Callback is captured and invoked with stubbed tasks
@@ -129,7 +150,7 @@ class TasksPresenterTest {
             // Given an initialized TasksPresenter with initialized tasks
             // When loading of Tasks is requested
             currentFiltering = TasksFilterType.COMPLETED_TASKS
-            loadTasks(true)
+            onCreated()
         }
 
         // Callback is captured and invoked with stubbed tasks

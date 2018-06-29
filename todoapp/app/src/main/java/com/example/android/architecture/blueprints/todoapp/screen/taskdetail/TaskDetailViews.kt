@@ -5,17 +5,16 @@ import android.view.View
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.util.showSnackBar
 import com.naver.android.svc.core.views.UseCaseViews
-import kotlinx.android.synthetic.main.activity_task_detail.*
 import kotlinx.android.synthetic.main.activity_task_detail.view.*
 
 /**
  * @author bs.nam@navercorp.com
  */
-class TaskDetailViews(screen: TaskDetailActivity) : UseCaseViews<TaskDetailUseCase>(screen) {
+class TaskDetailViews : UseCaseViews<TaskDetailUseCase>() {
 
-    private val detailTitle by lazy { screen.task_detail_title }
-    private val detailDescription by lazy { screen.task_detail_description }
-    private val detailCompleteStatus by lazy { screen.task_detail_complete }
+    private val detailTitle by lazy { rootView.task_detail_title }
+    private val detailDescription by lazy { rootView.task_detail_description }
+    private val detailCompleteStatus by lazy { rootView.task_detail_complete }
 
 
     override val layoutResId: Int

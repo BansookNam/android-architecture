@@ -13,6 +13,6 @@ class StatisticsFragment : BaseFragment<StatisticsViews, StatisticsCT>() {
         get() = R.string.statistics_title
 
     override fun createControlTower() = StatisticsCT(this, views, Injection.provideTasksRepository(activity!!.applicationContext))
-    override fun createViews() = StatisticsViews(this)
+    override fun createViews() = StatisticsViews()
 
 }

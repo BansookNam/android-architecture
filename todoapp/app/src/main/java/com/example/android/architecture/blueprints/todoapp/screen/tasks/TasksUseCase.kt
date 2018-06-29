@@ -9,4 +9,5 @@ interface TasksUseCase : UseCase, TasksAdapter.TaskItemListener {
     fun onRefresh()
     fun onClickTaskAdd()
 
+
 }

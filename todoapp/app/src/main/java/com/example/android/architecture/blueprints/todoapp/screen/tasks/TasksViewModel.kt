@@ -2,8 +2,6 @@ package com.example.android.architecture.blueprints.todoapp.screen.tasks
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.content.Context
-import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
@@ -11,20 +9,16 @@ import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingRe
 import java.util.*
 
 class TasksViewModel : ViewModel() {
-    lateinit var tasksRepository: TasksRepository
+    var tasksRepository: TasksRepository? = null
 
     val tasks = MutableLiveData<MutableList<Task>>()
 
-    fun initRepository(applicationContext: Context) {
-        tasksRepository = Injection.provideTasksRepository(applicationContext)
-    }
-
     fun refreshTasks() {
-        tasksRepository.refreshTasks()
+        tasksRepository?.refreshTasks()
     }
 
     fun getTasks(currentFiltering: TasksFilterType, callback: TasksDataSource.LoadTasksCallback) {
-        tasksRepository.getTasks(object : TasksDataSource.LoadTasksCallback {
+        tasksRepository?.getTasks(object : TasksDataSource.LoadTasksCallback {
             override fun onTasksLoaded(taskList: List<Task>) {
                 val tasksToShow = ArrayList<Task>()
 
@@ -49,7 +43,7 @@ class TasksViewModel : ViewModel() {
                 }
                 // The view may not be able to handle UI updates anymore
                 tasks.value = tasksToShow
-                callback.onTasksLoaded(taskList)
+                callback.onTasksLoaded(tasksToShow)
             }
 
             override fun onDataNotAvailable() {
@@ -59,14 +53,14 @@ class TasksViewModel : ViewModel() {
     }
 
     fun completeTask(completedTask: Task) {
-        tasksRepository.completeTask(completedTask)
+        tasksRepository?.completeTask(completedTask)
     }
 
     fun activateTask(activeTask: Task) {
-        tasksRepository.activateTask(activeTask)
+        tasksRepository?.activateTask(activeTask)
     }
 
     fun clearCompletedTasks() {
-        tasksRepository.clearCompletedTasks()
+        tasksRepository?.clearCompletedTasks()
     }
 }

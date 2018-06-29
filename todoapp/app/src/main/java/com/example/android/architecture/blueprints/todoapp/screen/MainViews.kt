@@ -5,17 +5,16 @@ import android.support.v4.view.GravityCompat
 import android.view.Gravity
 import com.example.android.architecture.blueprints.todoapp.R
 import com.naver.android.svc.core.views.UseCaseViews
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 
 /**
  * @author bs.nam@navercorp.com
  */
-class MainViews(screen: MainActivity) : UseCaseViews<MainUseCase>(screen) {
+class MainViews : UseCaseViews<MainUseCase>() {
 
-    val drawerLayout by lazy { screen.drawer_layout }
-    val toolbar by lazy { screen.toolbar }
-    val fab by lazy { screen.fab_add_task }
+    val drawerLayout by lazy { rootView.drawer_layout }
+    val toolbar by lazy { rootView.toolbar }
+    val fab by lazy { rootView.fab_add_task }
 
     override val layoutResId: Int
         get() = R.layout.activity_main

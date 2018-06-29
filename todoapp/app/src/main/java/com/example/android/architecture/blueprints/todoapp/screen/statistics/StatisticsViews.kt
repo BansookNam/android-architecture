@@ -2,14 +2,14 @@ package com.example.android.architecture.blueprints.todoapp.screen.statistics
 
 import com.example.android.architecture.blueprints.todoapp.R
 import com.naver.android.svc.core.views.SvcViews
-import kotlinx.android.synthetic.main.fragment_statistics.*
+import kotlinx.android.synthetic.main.fragment_statistics.view.*
 
 /**
  * @author bs.nam@navercorp.com
  */
-class StatisticsViews(screen: StatisticsFragment) : SvcViews(screen) {
+class StatisticsViews : SvcViews() {
 
-    private val statisticsTV by lazy { screen.statistics }
+    private val statisticsTV by lazy { rootView.statistics }
 
     override val layoutResId: Int
         get() = R.layout.fragment_statistics
@@ -39,6 +39,10 @@ class StatisticsViews(screen: StatisticsFragment) : SvcViews(screen) {
 
     fun showLoadingStatisticsError() {
         statisticsTV.text = getString(R.string.statistics_error)
+    }
+
+    fun show() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 }

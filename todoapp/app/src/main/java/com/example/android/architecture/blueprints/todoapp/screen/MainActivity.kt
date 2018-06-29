@@ -20,7 +20,7 @@ class MainActivity : SvcActivity<MainViews, MainCT>() {
         get() = supportFragmentManager.findFragmentById(R.id.contentFrame) as BaseFragment<*, *>
 
     override fun createControlTower() = MainCT(this, views)
-    override fun createViews() = MainViews(this)
+    override fun createViews() = MainViews()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

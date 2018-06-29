@@ -13,7 +13,7 @@ import com.naver.android.svc.core.screen.SvcActivity
 class AddEditTaskActivity : SvcActivity<AddEditTaskViews, AddEditTaskCT>() {
 
     override fun createControlTower() = AddEditTaskCT(this, views, Injection.provideTasksRepository(applicationContext))
-    override fun createViews() = AddEditTaskViews(this)
+    override fun createViews() = AddEditTaskViews()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val taskId = intent.getStringExtra(ARGUMENT_EDIT_TASK_ID)
