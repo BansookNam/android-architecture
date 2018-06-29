@@ -9,7 +9,7 @@ import com.naver.android.svc.core.controltower.SvcCT
  */
 class AddEditTaskCT(screen: AddEditTaskActivity, views: AddEditTaskViews, private val tasksRepository: TasksDataSource) : SvcCT<AddEditTaskActivity, AddEditTaskViews>(screen, views), AddEditTaskUseCase, TasksDataSource.GetTaskCallback {
 
-    var isDataMissing: Boolean = false
+    var isDataMissing: Boolean = true
     var taskId: String? = null
 
     override fun onCreated() {

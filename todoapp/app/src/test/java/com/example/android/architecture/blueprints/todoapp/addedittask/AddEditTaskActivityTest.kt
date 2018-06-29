@@ -38,7 +38,7 @@ import org.mockito.MockitoAnnotations
 /**
  * Unit tests for the implementation of [AddEditTaskPresenter].
  */
-class AddEditTaskPresenterTest {
+class AddEditTaskActivityTest {
 
     @Mock
     private lateinit var screen: AddEditTaskActivity
@@ -62,14 +62,6 @@ class AddEditTaskPresenterTest {
 
         // The presenter wont't update the view unless it's active.
         `when`(addEditTaskViews.isActive).thenReturn(true)
-    }
-
-    @Test fun createPresenter_setsThePresenterToView() {
-        // Get a reference to the class under test
-        addEditTaskCT = AddEditTaskCT(screen, addEditTaskViews, tasksRepository)
-
-        // Then the presenter is set to the view
-        verify(addEditTaskViews).useCase = addEditTaskCT
     }
 
     @Test fun saveNewTaskToRepository_showsSuccessMessageUi() {
