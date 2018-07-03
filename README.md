@@ -14,7 +14,7 @@ This version of the app is called todo-svc-kotlin, and provides a foundation for
 * SVC library. 
 
   ```groovy
-  implementation "com.naver.android.svc:svc:0.0.1-alpha5"
+  implementation "com.naver.android.svc:svc:0.0.2-alpha3"
   ```
 
   
@@ -25,15 +25,17 @@ This version of the app is called todo-svc-kotlin, and provides a foundation for
 
 Medium: You need to [learn](http://kotlinlang.org/docs/reference/) the kotlin language. 
 
-And you need to read what is SVC. Read this [article](https://medium.com/@bansooknam/svc-the-better-pattern-against-mvp-66e6d342a23f)
+And you need to read what is SVC. 
 
-
+1. Read this [article](https://medium.com/@bansooknam/svc-the-better-pattern-against-mvp-66e6d342a23f)
+2. Read "readme.md" from [SVC repository](https://github.com/naver/svc)
 
 ### Testability
 
 #### Unit testing
 
-Will be updated after finish this project
+Same as TODO-MVP.
+You can change lifeCycle of Screen menually for test (see: [TasksFragmentTest.kt](https://github.com/BansookNam/android-architecture/blob/todo-svc-kotlin/todoapp/app/src/test/java/com/example/android/architecture/blueprints/todoapp/tasks/TasksFragmentTest.kt))
 
 #### Integration testing
 
@@ -41,25 +43,21 @@ Will be updated after finish this project
 
 ### Code metrics
 
-Will be updated after finish this project
-
-The below chart is from (kotlin MVP)
-
 ```
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Kotlin                          48            958           1539           3103 (3901 in MVP java)
-XML                             34             95            338            816
+Kotlin                          37            411           553           1465 (3103 in MVP kotlin)
+XML                             30             82            276            535
 -------------------------------------------------------------------------------
-SUM:                            82           1053           1877           3919
+SUM:                            67           493           829           2000
 -------------------------------------------------------------------------------
 ```
 ### Maintainability
 
 #### Ease of amending or adding a feature
 
-Really easy.
+Pretty much Same or less then TODO-MVP. (Do not need interface for presenter or view, instead need interface for "viewsAction")
 
 #### Learning cost
 
