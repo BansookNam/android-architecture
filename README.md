@@ -14,7 +14,7 @@ This version of the app is called todo-svc-kotlin, and provides a foundation for
 * SVC library. 
 
   ```groovy
-  implementation "com.naver.android.svc:svc:0.0.2-alpha3"
+  implementation "com.naver.android.svc:svc:0.0.2-alpha14"
   ```
 
   
@@ -47,10 +47,10 @@ Will be updated after finish this project
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Kotlin                          37            411           553           1465 (3103 in MVP kotlin)
-XML                             30             82            276            535
+Kotlin                          37            397           553           1452 (1538 in todo-mvp-kotlin)
+XML                             31             85            291            556 (608 in todo-mvp-kotlin)
 -------------------------------------------------------------------------------
-SUM:                            67           493           829           2000
+SUM:                            68           482           844           2008
 -------------------------------------------------------------------------------
 ```
 ### Maintainability
