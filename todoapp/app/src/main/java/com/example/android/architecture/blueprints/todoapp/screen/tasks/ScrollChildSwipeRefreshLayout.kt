@@ -16,7 +16,6 @@
 package com.example.android.architecture.blueprints.todoapp.screen.tasks
 
 import android.content.Context
-import android.support.v4.view.ViewCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.util.AttributeSet
 import android.view.View
@@ -29,12 +28,9 @@ import android.view.View
  * the refresh only when the view is on top. This class adds a way (@link #setScrollUpChild} to
  * define which view controls this behavior.
  */
-class ScrollChildSwipeRefreshLayout @JvmOverloads constructor(context: Context,
-        attrs: AttributeSet? = null)
-    : SwipeRefreshLayout(context, attrs) {
+class ScrollChildSwipeRefreshLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : SwipeRefreshLayout(context, attrs) {
 
     var scrollUpChild: View? = null
 
-    override fun canChildScrollUp() =
-            scrollUpChild?.canScrollVertically(-1) ?: super.canChildScrollUp()
+    override fun canChildScrollUp() = scrollUpChild?.canScrollVertically(-1) ?: super.canChildScrollUp()
 }

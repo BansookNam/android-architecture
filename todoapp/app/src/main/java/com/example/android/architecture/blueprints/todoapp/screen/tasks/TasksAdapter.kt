@@ -11,8 +11,7 @@ import kotlinx.android.synthetic.main.task_item.view.*
 /**
  * @author bs.nam@navercorp.com
  */
-class TasksAdapter(tasks: List<Task>, private val itemListener: TaskItemListener)
-    : BaseAdapter() {
+class TasksAdapter(tasks: List<Task>, private val itemListener: TaskItemListener) : BaseAdapter() {
 
     var tasks: List<Task> = tasks
         set(tasks) {
@@ -28,8 +27,7 @@ class TasksAdapter(tasks: List<Task>, private val itemListener: TaskItemListener
 
     override fun getView(i: Int, view: View?, viewGroup: ViewGroup): View {
         val task = getItem(i)
-        val rowView = view ?: LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.task_item, viewGroup, false)
+        val rowView = view ?: LayoutInflater.from(viewGroup.context).inflate(R.layout.task_item, viewGroup, false)
 
         with(rowView.title) {
             text = task.titleForList
@@ -55,11 +53,8 @@ class TasksAdapter(tasks: List<Task>, private val itemListener: TaskItemListener
     }
 
     interface TaskItemListener {
-
         fun onTaskClick(clickedTask: Task)
-
         fun onCompleteTaskClick(completedTask: Task)
-
         fun onActivateTaskClick(activatedTask: Task)
     }
 }

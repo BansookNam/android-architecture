@@ -33,19 +33,19 @@ class TasksFragment : BaseFragment<TasksViews, TasksControlTower>() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         if (savedInstanceState != null) {
-            ct.currentFiltering = savedInstanceState.getSerializable(CURRENT_FILTERING_KEY)
+            controlTower.currentFiltering = savedInstanceState.getSerializable(CURRENT_FILTERING_KEY)
                     as TasksFilterType
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState.apply {
-            putSerializable(CURRENT_FILTERING_KEY, ct.currentFiltering)
+            putSerializable(CURRENT_FILTERING_KEY, controlTower.currentFiltering)
         })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        ct.result(requestCode, resultCode)
+        controlTower.result(requestCode, resultCode)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
@@ -54,9 +54,9 @@ class TasksFragment : BaseFragment<TasksViews, TasksControlTower>() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_clear -> ct.clearCompletedTasks()
+            R.id.menu_clear -> controlTower.clearCompletedTasks()
             R.id.menu_filter -> showFilteringPopUpMenu()
-            R.id.menu_refresh -> ct.loadTasks(true)
+            R.id.menu_refresh -> controlTower.loadTasks(true)
         }
         return true
     }
@@ -69,11 +69,11 @@ class TasksFragment : BaseFragment<TasksViews, TasksControlTower>() {
             menuInflater.inflate(R.menu.filter_tasks, menu)
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.active -> ct.currentFiltering = TasksFilterType.ACTIVE_TASKS
-                    R.id.completed -> ct.currentFiltering = TasksFilterType.COMPLETED_TASKS
-                    else -> ct.currentFiltering = TasksFilterType.ALL_TASKS
+                    R.id.active -> controlTower.currentFiltering = TasksFilterType.ACTIVE_TASKS
+                    R.id.completed -> controlTower.currentFiltering = TasksFilterType.COMPLETED_TASKS
+                    else -> controlTower.currentFiltering = TasksFilterType.ALL_TASKS
                 }
-                ct.loadTasks(false)
+                controlTower.loadTasks(false)
                 true
             }
             show()

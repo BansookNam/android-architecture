@@ -11,7 +11,8 @@ import com.naver.android.svc.core.controltower.ControlTower
 /**
  * @author bs.nam@navercorp.com
  */
-class TasksControlTower(screen: TasksFragment, views: TasksViews, val vm: TasksViewModel, val tasksRepository: TasksRepository) : ControlTower<TasksFragment, TasksViews>(screen, views), TasksViewsAction {
+class TasksControlTower(screen: TasksFragment, views: TasksViews, private val vm: TasksViewModel, val tasksRepository: TasksRepository)
+    : ControlTower<TasksFragment, TasksViews>(screen, views), TasksViewsAction {
 
     var currentFiltering: TasksFilterType = TasksFilterType.ACTIVE_TASKS
     private var firstLoad = true
@@ -84,8 +85,7 @@ class TasksControlTower(screen: TasksFragment, views: TasksViews, val vm: TasksV
         EspressoIdlingResource.increment() // App is busy until further notice
 
         vm.getTasks(currentFiltering, object : TasksDataSource.LoadTasksCallback {
-            override fun onTasksLoaded(tasks: List<Task>) {
-            }
+            override fun onTasksLoaded(tasks: List<Task>) {}
 
             override fun onDataNotAvailable() {
                 if (!screen.isActive) {
@@ -96,7 +96,6 @@ class TasksControlTower(screen: TasksFragment, views: TasksViews, val vm: TasksV
 
         })
     }
-
 
     private fun processTasks(tasks: List<Task>) {
         if (tasks.isEmpty()) {
@@ -147,5 +146,4 @@ class TasksControlTower(screen: TasksFragment, views: TasksViews, val vm: TasksV
         views.showCompletedTasksCleared()
         loadTasks(false, false)
     }
-
 }

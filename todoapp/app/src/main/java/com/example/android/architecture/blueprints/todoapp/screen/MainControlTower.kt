@@ -8,8 +8,7 @@ import com.naver.android.svc.core.controltower.ControlTower
  */
 class MainControlTower(screen: MainActivity, views: MainViews) : ControlTower<MainActivity, MainViews>(screen, views), MainViewsAction {
 
-    override fun onCreated() {
-    }
+    override fun onCreated() {}
 
     override fun onClickStatisticMenu() {
         screen.showStatisticFragment()

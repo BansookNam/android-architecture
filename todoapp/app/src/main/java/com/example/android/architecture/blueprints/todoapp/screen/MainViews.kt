@@ -12,20 +12,17 @@ import kotlinx.android.synthetic.main.activity_main.view.*
  */
 class MainViews : ActionViews<MainViewsAction>() {
 
-    val drawerLayout by lazy { rootView.drawer_layout }
-    val toolbar by lazy { rootView.toolbar }
-    val fab by lazy { rootView.fab_add_task }
+    private val drawerLayout by lazy { rootView.drawer_layout }
+    private val fab by lazy { rootView.fab_add_task }
 
     override val layoutResId: Int
         get() = R.layout.activity_main
 
     override fun onCreated() {
-
         fab.apply {
             setImageResource(R.drawable.ic_add)
             setOnClickListener { viewsAction.onClickFabTaskAdd() }
         }
-
 
         drawerLayout.setStatusBarBackground(R.color.colorPrimaryDark)
         setupDrawerContent(rootView.nav_view)
@@ -37,7 +34,6 @@ class MainViews : ActionViews<MainViewsAction>() {
 
     private fun setupDrawerContent(navigationView: NavigationView) {
         navigationView.setNavigationItemSelectedListener { menuItem ->
-
             when (menuItem.itemId) {
                 R.id.statistics_navigation_menu_item -> viewsAction.onClickStatisticMenu()
                 R.id.list_navigation_menu_item -> viewsAction.onClickTaskListMenu()
