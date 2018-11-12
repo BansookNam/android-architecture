@@ -2,12 +2,12 @@ package com.example.android.architecture.blueprints.todoapp.screen.addedittask
 
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
-import com.naver.android.svc.core.controltower.SvcCT
+import com.naver.android.svc.core.controltower.ControlTower
 
 /**
  * @author bs.nam@navercorp.com
  */
-class AddEditTaskCT(screen: AddEditTaskActivity, views: AddEditTaskViews, private val tasksRepository: TasksDataSource) : SvcCT<AddEditTaskActivity, AddEditTaskViews>(screen, views), AddEditTaskUseCase, TasksDataSource.GetTaskCallback {
+class AddEditTaskControlTower(screen: AddEditTaskActivity, views: AddEditTaskViews, private val tasksRepository: TasksDataSource) : ControlTower<AddEditTaskActivity, AddEditTaskViews>(screen, views), AddEditTaskViewsAction, TasksDataSource.GetTaskCallback {
 
     var isDataMissing: Boolean = true
     var taskId: String? = null

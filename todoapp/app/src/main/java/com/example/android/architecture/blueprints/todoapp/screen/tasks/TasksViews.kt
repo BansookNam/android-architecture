@@ -5,30 +5,30 @@ import android.view.View
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.util.showSnackBar
-import com.naver.android.svc.core.views.UseCaseViews
+import com.naver.android.svc.core.views.ActionViews
 import kotlinx.android.synthetic.main.fragment_tasks.view.*
 import java.util.*
 
 /**
  * @author bs.nam@navercorp.com
  */
-class TasksViews : UseCaseViews<TasksUseCase>() {
+class TasksViews : ActionViews<TasksViewsAction>() {
 
     override val layoutResId: Int
         get() = R.layout.fragment_tasks
 
-    val noTasksView by lazy { rootView.noTasks }
-    val noTaskIcon by lazy { rootView.noTasksIcon }
-    val noTaskMainView by lazy { rootView.noTasksMain }
-    val noTaskAddView by lazy { rootView.noTasksAdd }
-    val tasksView by lazy { rootView.tasksLL }
-    val filteringLabelView by lazy { rootView.filteringLabel }
+    private val noTasksView by lazy { rootView.noTasks }
+    private val noTaskIcon by lazy { rootView.noTasksIcon }
+    private val noTaskMainView by lazy { rootView.noTasksMain }
+    private val noTaskAddView by lazy { rootView.noTasksAdd }
+    private val tasksView by lazy { rootView.tasksLL }
+    private val filteringLabelView by lazy { rootView.filteringLabel }
 
     /**
-     * should initialize "onCreated" because useCase instance setted when "onCreated"
+     * should initialize "onCreated" because viewsAction instance settled when "onCreated"
      * or use lazy initialize.
      */
-    val listAdapter by lazy { TasksAdapter(ArrayList(0), useCase) }
+    private val listAdapter by lazy { TasksAdapter(ArrayList(0), viewsAction) }
 
 
     override fun onCreated() {
@@ -46,11 +46,11 @@ class TasksViews : UseCaseViews<TasksUseCase>() {
             )
             // Set the scrolling view in the custom SwipeRefreshLayout.
             scrollUpChild = listView
-            setOnRefreshListener { useCase.onRefresh() }
+            setOnRefreshListener { viewsAction.onRefresh() }
         }
 
         noTaskAddView.setOnClickListener {
-            useCase.onClickTaskAdd()
+            viewsAction.onClickTaskAdd()
         }
     }
 

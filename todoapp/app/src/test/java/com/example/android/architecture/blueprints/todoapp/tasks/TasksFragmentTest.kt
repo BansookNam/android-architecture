@@ -68,7 +68,7 @@ class TasksFragmentTest {
      */
     @Captor private lateinit var loadTasksCallbackCaptor: ArgumentCaptor<LoadTasksCallback>
 
-    private lateinit var tasksCT: TasksCT
+    private lateinit var tasksCT: TasksControlTower
 
     private lateinit var tasks: MutableList<Task>
 
@@ -88,7 +88,7 @@ class TasksFragmentTest {
         `when`(screen.lifecycle).thenReturn(lifeCycle)
 
         // Get a reference to the class under test
-        tasksCT = TasksCT(screen, tasksViews, tasksViewModel, tasksRepository)
+        tasksCT = TasksControlTower(screen, tasksViews, tasksViewModel, tasksRepository)
         tasksViewModel.tasksRepository = tasksRepository
         lifeCycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
 

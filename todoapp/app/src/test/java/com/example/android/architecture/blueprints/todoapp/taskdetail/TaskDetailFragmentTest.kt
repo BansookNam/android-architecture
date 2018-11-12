@@ -21,7 +21,7 @@ import com.example.android.architecture.blueprints.todoapp.data.source.TasksData
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import com.example.android.architecture.blueprints.todoapp.eq
 import com.example.android.architecture.blueprints.todoapp.screen.taskdetail.TaskDetailActivity
-import com.example.android.architecture.blueprints.todoapp.screen.taskdetail.TaskDetailCT
+import com.example.android.architecture.blueprints.todoapp.screen.taskdetail.TaskDetailControlTower
 import com.example.android.architecture.blueprints.todoapp.screen.taskdetail.TaskDetailViews
 import org.junit.Before
 import org.junit.Test
@@ -60,7 +60,7 @@ class TaskDetailFragmentTest {
     @Captor private lateinit var getTaskCallbackCaptor:
             ArgumentCaptor<TasksDataSource.GetTaskCallback>
 
-    private lateinit var taskDetailCT: TaskDetailCT
+    private lateinit var taskDetailCT: TaskDetailControlTower
 
     @Before fun setup() {
         // Mockito has a very convenient way to inject mocks by using the @Mock annotation. To
@@ -75,7 +75,7 @@ class TaskDetailFragmentTest {
 
     @Test fun getActiveTaskFromRepositoryAndLoadIntoView() {
         // When tasks presenter is asked to open a task
-        taskDetailCT = TaskDetailCT(screen, views, ACTIVE_TASK.id, tasksRepository)
+        taskDetailCT = TaskDetailControlTower(screen, views, ACTIVE_TASK.id, tasksRepository)
                 .apply {
                     onCreated()
                 }
@@ -97,7 +97,7 @@ class TaskDetailFragmentTest {
     }
 
     @Test fun getCompletedTaskFromRepositoryAndLoadIntoView() {
-        taskDetailCT = TaskDetailCT(screen, views, COMPLETED_TASK.id, tasksRepository)
+        taskDetailCT = TaskDetailControlTower(screen, views, COMPLETED_TASK.id, tasksRepository)
                 .apply { onCreated() }
 
         // Then task is loaded from model, callback is captured and progress indicator is shown
@@ -119,7 +119,7 @@ class TaskDetailFragmentTest {
 
     @Test fun getUnknownTaskFromRepositoryAndLoadIntoView() {
         // When loading of a task is requested with an invalid task ID.
-        taskDetailCT = TaskDetailCT(screen, views, INVALID_TASK_ID, tasksRepository)
+        taskDetailCT = TaskDetailControlTower(screen, views, INVALID_TASK_ID, tasksRepository)
                 .apply { onCreated() }
         verify(views).showMissingTask()
     }
@@ -129,7 +129,7 @@ class TaskDetailFragmentTest {
         val task = Task(TITLE_TEST, DESCRIPTION_TEST)
 
         // When the deletion of a task is requested
-        taskDetailCT = TaskDetailCT(screen, views, task.id, tasksRepository)
+        taskDetailCT = TaskDetailControlTower(screen, views, task.id, tasksRepository)
                 .apply { deleteTask() }
 
         // Then the repository and the view are notified
@@ -140,7 +140,7 @@ class TaskDetailFragmentTest {
     @Test fun completeTask() {
         // Given an initialized presenter with an active task
         val task = Task(TITLE_TEST, DESCRIPTION_TEST)
-        taskDetailCT = TaskDetailCT(screen, views, task.id, tasksRepository)
+        taskDetailCT = TaskDetailControlTower(screen, views, task.id, tasksRepository)
 
         taskDetailCT.apply {
             onCreated()
@@ -155,7 +155,7 @@ class TaskDetailFragmentTest {
     @Test fun activateTask() {
         // Given an initialized presenter with a completed task
         val task = Task(TITLE_TEST, DESCRIPTION_TEST).apply { isCompleted = true }
-        taskDetailCT = TaskDetailCT(screen, views, task.id, tasksRepository)
+        taskDetailCT = TaskDetailControlTower(screen, views, task.id, tasksRepository)
                 .apply {
                     onCreated()
                     activateTask()
@@ -170,7 +170,7 @@ class TaskDetailFragmentTest {
 
     @Test fun activeTaskIsShownWhenEditing() {
         // When the edit of an ACTIVE_TASK is requested
-        taskDetailCT = TaskDetailCT(
+        taskDetailCT = TaskDetailControlTower(
                 screen, views, ACTIVE_TASK.id, tasksRepository).apply { editTask() }
 
         // Then the view is notified
@@ -179,7 +179,7 @@ class TaskDetailFragmentTest {
 
     @Test fun invalidTaskIsNotShownWhenEditing() {
         // When the edit of an invalid task id is requested
-        taskDetailCT = TaskDetailCT(
+        taskDetailCT = TaskDetailControlTower(
                 screen, views, INVALID_TASK_ID, tasksRepository).apply { editTask() }
 
         // Then the edit mode is never started

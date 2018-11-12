@@ -16,7 +16,7 @@ import com.example.android.architecture.blueprints.todoapp.screen.taskdetail.Tas
 /**
  * @author bs.nam@navercorp.com
  */
-class TasksFragment : BaseFragment<TasksViews, TasksCT>() {
+class TasksFragment : BaseFragment<TasksViews, TasksControlTower>() {
 
     override val fragmentTitleResId: Int
         get() = R.string.list_title
@@ -25,7 +25,7 @@ class TasksFragment : BaseFragment<TasksViews, TasksCT>() {
 
     val vm by lazy { ViewModelProviders.of(this).get(TasksViewModel::class.java) }
 
-    override fun createControlTower() = TasksCT(this, views, vm, Injection.provideTasksRepository(activity!!.applicationContext))
+    override fun createControlTower() = TasksControlTower(this, views, vm, Injection.provideTasksRepository(activity!!.applicationContext))
     override fun createViews() = TasksViews()
 
 

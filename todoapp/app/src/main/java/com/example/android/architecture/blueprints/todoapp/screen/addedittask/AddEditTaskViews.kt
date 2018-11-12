@@ -3,13 +3,13 @@ package com.example.android.architecture.blueprints.todoapp.screen.addedittask
 import android.support.design.widget.Snackbar
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.util.showSnackBar
-import com.naver.android.svc.core.views.UseCaseViews
+import com.naver.android.svc.core.views.ActionViews
 import kotlinx.android.synthetic.main.activity_add_edit_task.view.*
 
 /**
  * @author bs.nam@navercorp.com
  */
-class AddEditTaskViews : UseCaseViews<AddEditTaskUseCase>() {
+class AddEditTaskViews : ActionViews<AddEditTaskViewsAction>() {
 
     private val title by lazy { rootView.add_task_title }
     private val description by lazy { rootView.add_task_description }
@@ -22,7 +22,7 @@ class AddEditTaskViews : UseCaseViews<AddEditTaskUseCase>() {
 
     override fun onCreated() {
         rootView.fab_edit_task_done.setOnClickListener {
-            useCase.onClickFabEditTaskDone(title.text.toString(), description.text.toString())
+            viewsAction.onClickFabEditTaskDone(title.text.toString(), description.text.toString())
         }
     }
 

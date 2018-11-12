@@ -4,13 +4,13 @@ import android.support.design.widget.Snackbar
 import android.view.View
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.util.showSnackBar
-import com.naver.android.svc.core.views.UseCaseViews
+import com.naver.android.svc.core.views.ActionViews
 import kotlinx.android.synthetic.main.activity_task_detail.view.*
 
 /**
  * @author bs.nam@navercorp.com
  */
-class TaskDetailViews : UseCaseViews<TaskDetailUseCase>() {
+class TaskDetailViews : ActionViews<TaskDetailViewsAction>() {
 
     private val detailTitle by lazy { rootView.task_detail_title }
     private val detailDescription by lazy { rootView.task_detail_description }
@@ -22,7 +22,7 @@ class TaskDetailViews : UseCaseViews<TaskDetailUseCase>() {
 
     override fun onCreated() {
         // Set up floating action button
-        rootView.fab_edit_task.setOnClickListener { useCase.onClickFabEditTask() }
+        rootView.fab_edit_task.setOnClickListener { viewsAction.onClickFabEditTask() }
     }
 
 
@@ -53,9 +53,9 @@ class TaskDetailViews : UseCaseViews<TaskDetailUseCase>() {
             isChecked = complete
             setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
-                    useCase.onTaskCompleteChecked()
+                    viewsAction.onTaskCompleteChecked()
                 } else {
-                    useCase.onTaskActivateChecked()
+                    viewsAction.onTaskActivateChecked()
                 }
             }
         }

@@ -3,12 +3,12 @@ package com.example.android.architecture.blueprints.todoapp.screen.statistics
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
-import com.naver.android.svc.core.controltower.SvcCT
+import com.naver.android.svc.core.controltower.ControlTower
 
 /**
  * @author bs.nam@navercorp.com
  */
-class StatisticsCT(screen: StatisticsFragment, views: StatisticsViews, private var tasksRepository: TasksDataSource) : SvcCT<StatisticsFragment, StatisticsViews>(screen, views) {
+class StatisticsControlTower(screen: StatisticsFragment, views: StatisticsViews, private var tasksRepository: TasksDataSource) : ControlTower<StatisticsFragment, StatisticsViews>(screen, views) {
 
     override fun onCreated() {
         loadStatistics()

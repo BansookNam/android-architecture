@@ -4,13 +4,13 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.view.Gravity
 import com.example.android.architecture.blueprints.todoapp.R
-import com.naver.android.svc.core.views.UseCaseViews
+import com.naver.android.svc.core.views.ActionViews
 import kotlinx.android.synthetic.main.activity_main.view.*
 
 /**
  * @author bs.nam@navercorp.com
  */
-class MainViews : UseCaseViews<MainUseCase>() {
+class MainViews : ActionViews<MainViewsAction>() {
 
     val drawerLayout by lazy { rootView.drawer_layout }
     val toolbar by lazy { rootView.toolbar }
@@ -23,7 +23,7 @@ class MainViews : UseCaseViews<MainUseCase>() {
 
         fab.apply {
             setImageResource(R.drawable.ic_add)
-            setOnClickListener { useCase.onClickFabTaskAdd() }
+            setOnClickListener { viewsAction.onClickFabTaskAdd() }
         }
 
 
@@ -39,8 +39,8 @@ class MainViews : UseCaseViews<MainUseCase>() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
 
             when (menuItem.itemId) {
-                R.id.statistics_navigation_menu_item -> useCase.onClickStatisticMenu()
-                R.id.list_navigation_menu_item -> useCase.onClickTaskListMenu()
+                R.id.statistics_navigation_menu_item -> viewsAction.onClickStatisticMenu()
+                R.id.list_navigation_menu_item -> viewsAction.onClickTaskListMenu()
             }
             // Close the navigation drawer when an item is selected.
             menuItem.isChecked = true

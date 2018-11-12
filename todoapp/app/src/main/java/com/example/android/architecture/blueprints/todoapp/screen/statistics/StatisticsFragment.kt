@@ -7,12 +7,12 @@ import com.example.android.architecture.blueprints.todoapp.screen.base.BaseFragm
 /**
  * @author bs.nam@navercorp.com
  */
-class StatisticsFragment : BaseFragment<StatisticsViews, StatisticsCT>() {
+class StatisticsFragment : BaseFragment<StatisticsViews, StatisticsControlTower>() {
 
     override val fragmentTitleResId: Int
         get() = R.string.statistics_title
 
-    override fun createControlTower() = StatisticsCT(this, views, Injection.provideTasksRepository(activity!!.applicationContext))
+    override fun createControlTower() = StatisticsControlTower(this, views, Injection.provideTasksRepository(activity!!.applicationContext))
     override fun createViews() = StatisticsViews()
 
 }

@@ -22,7 +22,7 @@ import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
 import com.example.android.architecture.blueprints.todoapp.eq
 import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskActivity
-import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskCT
+import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskControlTower
 import com.example.android.architecture.blueprints.todoapp.screen.addedittask.AddEditTaskViews
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.assertThat
@@ -53,7 +53,7 @@ class AddEditTaskActivityTest {
      */
     @Captor private lateinit var getTaskCallbackCaptor: ArgumentCaptor<TasksDataSource.GetTaskCallback>
 
-    private lateinit var addEditTaskCT: AddEditTaskCT
+    private lateinit var addEditTaskCT: AddEditTaskControlTower
 
     @Before fun setupMocksAndView() {
         // Mockito has a very convenient way to inject mocks by using the @Mock annotation. To
@@ -66,7 +66,7 @@ class AddEditTaskActivityTest {
 
     @Test fun saveNewTaskToRepository_showsSuccessMessageUi() {
         // Get a reference to the class under test
-        addEditTaskCT = AddEditTaskCT(screen, addEditTaskViews, tasksRepository)
+        addEditTaskCT = AddEditTaskControlTower(screen, addEditTaskViews, tasksRepository)
 
         // When the presenter is asked to save a task
         addEditTaskCT.saveTask("New Task Title", "Some Task Description")
@@ -78,7 +78,7 @@ class AddEditTaskActivityTest {
 
     @Test fun saveTask_emptyTaskShowsErrorUi() {
         // Get a reference to the class under test
-        addEditTaskCT = AddEditTaskCT(screen, addEditTaskViews, tasksRepository)
+        addEditTaskCT = AddEditTaskControlTower(screen, addEditTaskViews, tasksRepository)
 
         // When the presenter is asked to save an empty task
         addEditTaskCT.saveTask("", "")
@@ -89,7 +89,7 @@ class AddEditTaskActivityTest {
 
     @Test fun saveExistingTaskToRepository_showsSuccessMessageUi() {
         // Get a reference to the class under test
-        addEditTaskCT = AddEditTaskCT(screen, addEditTaskViews, tasksRepository)
+        addEditTaskCT = AddEditTaskControlTower(screen, addEditTaskViews, tasksRepository)
 
         // When the presenter is asked to save an existing task
         addEditTaskCT.saveTask("Existing Task Title", "Some Task Description")
@@ -102,7 +102,7 @@ class AddEditTaskActivityTest {
     @Test fun populateTask_callsRepoAndUpdatesView() {
         val testTask = Task("TITLE", "DESCRIPTION")
         // Get a reference to the class under test
-        addEditTaskCT = AddEditTaskCT(screen, addEditTaskViews, tasksRepository).apply {
+        addEditTaskCT = AddEditTaskControlTower(screen, addEditTaskViews, tasksRepository).apply {
             // When the presenter is asked to populate an existing task
             taskId = testTask.id
             populateTask()

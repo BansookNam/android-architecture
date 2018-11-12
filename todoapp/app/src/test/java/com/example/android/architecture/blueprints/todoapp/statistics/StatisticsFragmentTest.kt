@@ -18,7 +18,7 @@ package com.example.android.architecture.blueprints.todoapp.statistics
 import com.example.android.architecture.blueprints.todoapp.capture
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
-import com.example.android.architecture.blueprints.todoapp.screen.statistics.StatisticsCT
+import com.example.android.architecture.blueprints.todoapp.screen.statistics.StatisticsControlTower
 import com.example.android.architecture.blueprints.todoapp.screen.statistics.StatisticsFragment
 import com.example.android.architecture.blueprints.todoapp.screen.statistics.StatisticsViews
 import com.google.common.collect.Lists
@@ -48,7 +48,7 @@ class StatisticsFragmentTest {
      */
     @Captor private lateinit var loadTasksCallbackCaptor:
             ArgumentCaptor<TasksDataSource.LoadTasksCallback>
-    private lateinit var statisticsCT: StatisticsCT
+    private lateinit var statisticsCT: StatisticsControlTower
     private lateinit var tasks: MutableList<Task>
 
     @Before fun setupStatisticsPresenter() {
@@ -57,7 +57,7 @@ class StatisticsFragmentTest {
         MockitoAnnotations.initMocks(this)
 
         // Get a reference to the class under test
-        statisticsCT = StatisticsCT(screen, statisticsView, tasksRepository)
+        statisticsCT = StatisticsControlTower(screen, statisticsView, tasksRepository)
         //`when`(statisticsCT.tasksRepository).thenReturn(tasksRepository)
 
         // The presenter won't update the view unless it's active.

@@ -15,11 +15,11 @@ import com.naver.android.svc.core.screen.SvcActivity
 /**
  * @author bs.nam@navercorp.com
  */
-class MainActivity : SvcActivity<MainViews, MainCT>() {
+class MainActivity : SvcActivity<MainViews, MainControlTower>() {
     val contentFragment: BaseFragment<*, *>
         get() = supportFragmentManager.findFragmentById(R.id.contentFrame) as BaseFragment<*, *>
 
-    override fun createControlTower() = MainCT(this, views)
+    override fun createControlTower() = MainControlTower(this, views)
     override fun createViews() = MainViews()
 
     override fun onCreate(savedInstanceState: Bundle?) {

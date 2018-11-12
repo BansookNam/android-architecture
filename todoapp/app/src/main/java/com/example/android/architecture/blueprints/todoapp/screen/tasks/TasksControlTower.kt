@@ -6,12 +6,12 @@ import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
-import com.naver.android.svc.core.controltower.SvcCT
+import com.naver.android.svc.core.controltower.ControlTower
 
 /**
  * @author bs.nam@navercorp.com
  */
-class TasksCT(screen: TasksFragment, views: TasksViews, val vm: TasksViewModel, val tasksRepository: TasksRepository) : SvcCT<TasksFragment, TasksViews>(screen, views), TasksUseCase {
+class TasksControlTower(screen: TasksFragment, views: TasksViews, val vm: TasksViewModel, val tasksRepository: TasksRepository) : ControlTower<TasksFragment, TasksViews>(screen, views), TasksViewsAction {
 
     var currentFiltering: TasksFilterType = TasksFilterType.ACTIVE_TASKS
     private var firstLoad = true
