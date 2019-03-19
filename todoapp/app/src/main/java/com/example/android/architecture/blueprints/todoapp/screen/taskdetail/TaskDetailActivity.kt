@@ -46,7 +46,7 @@ class TaskDetailActivity : SvcActivity<TaskDetailViews, TaskDetailControlTower>(
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val deletePressed = item.itemId == R.id.menu_delete
-        if (deletePressed) ct.deleteTask()
+        if (deletePressed) controlTower.deleteTask()
         return deletePressed
     }
 

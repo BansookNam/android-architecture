@@ -16,7 +16,7 @@ import com.naver.android.svc.core.screen.SvcActivity
  * @author bs.nam@navercorp.com
  */
 class MainActivity : SvcActivity<MainViews, MainControlTower>() {
-    val contentFragment: BaseFragment<*, *> = supportFragmentManager.findFragmentById(R.id.contentFrame) as BaseFragment<*, *>
+    val contentFragment: BaseFragment<*, *> get() = supportFragmentManager.findFragmentById(R.id.contentFrame) as BaseFragment<*, *>
 
     override fun createControlTower() = MainControlTower(this, views)
     override fun createViews() = MainViews()
