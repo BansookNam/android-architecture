@@ -15,7 +15,7 @@ ext {
     rulesVersion = '1.0.1'
     espressoVersion = '3.0.1'
     roomVersion = "1.0.0"
-    svcVersion = "1.0.0-android-28-beta02"
+    svcVersion = "1.0.0-android-28-beta07"
     constraintLayoutVersion = "1.1.0"
     lifecycleVersion = "1.1.1"
 }

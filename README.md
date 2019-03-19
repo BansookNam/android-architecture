@@ -14,10 +14,9 @@ This version of the app is called todo-svc-kotlin, and provides a foundation for
 * SVC library. 
 
   ```groovy
-  implementation "com.naver.android.svc:svc:0.0.2-alpha14"
+  implementation "com.naver.android.svc:svc-generic:1.0.0-android-28-beta07"
   ```
 
-  
 
 ## Features
 

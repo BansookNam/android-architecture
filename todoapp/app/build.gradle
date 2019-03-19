@@ -74,7 +74,7 @@ configurations.all {
  */
 dependencies {
     // Dependency for SVC
-    implementation "com.naver.android.svc:svc:$rootProject.svcVersion"
+    implementation "com.naver.android.svc:svc-generic:$rootProject.svcVersion"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
     implementation "android.arch.lifecycle:extensions:$lifecycleVersion"
     // App's dependencies, including test
