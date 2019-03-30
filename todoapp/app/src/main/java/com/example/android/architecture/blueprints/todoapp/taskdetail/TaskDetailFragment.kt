@@ -18,12 +18,7 @@ package com.example.android.architecture.blueprints.todoapp.taskdetail
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.CheckBox
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.databinding.TaskdetailFragBinding
@@ -45,14 +40,14 @@ class TaskDetailFragment : Fragment() {
     }
 
     private fun setupFab() {
-        activity.findViewById<View>(R.id.fab_edit_task).setOnClickListener {
+        activity!!.findViewById<View>(R.id.fab_edit_task).setOnClickListener {
             viewDataBinding.viewmodel?.editTask()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        viewDataBinding.viewmodel?.start(arguments.getString(ARGUMENT_TASK_ID))
+        viewDataBinding.viewmodel?.start(arguments!!.getString(ARGUMENT_TASK_ID))
     }
 
     override fun onCreateView(

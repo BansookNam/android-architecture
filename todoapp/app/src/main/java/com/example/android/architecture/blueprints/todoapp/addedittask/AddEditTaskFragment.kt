@@ -61,7 +61,7 @@ class AddEditTaskFragment : Fragment() {
     }
 
     private fun setupFab() {
-        activity.findViewById<FloatingActionButton>(R.id.fab_edit_task_done).apply {
+        activity!!.findViewById<FloatingActionButton>(R.id.fab_edit_task_done).apply {
             setImageResource(R.drawable.ic_done)
             setOnClickListener { viewDataBinding.viewmodel?.saveTask() }
         }
@@ -69,7 +69,7 @@ class AddEditTaskFragment : Fragment() {
 
     private fun setupActionBar() {
         (activity as AppCompatActivity).supportActionBar?.setTitle(
-                if (arguments != null && arguments.get(ARGUMENT_EDIT_TASK_ID) != null)
+                if (arguments != null && arguments!!.get(ARGUMENT_EDIT_TASK_ID) != null)
                     R.string.edit_task
                 else
                     R.string.add_task
